@@ -4,3 +4,7 @@ A set of tools for writing &amp; testing expressions, managing OpenFn projects, 
 ## installation
 git clone blah.git
 git submodule update --remote
+
+cd fn-lang
+npm link ../language-salesforce
+npm link ../language-common
