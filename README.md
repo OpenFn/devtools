@@ -22,9 +22,3 @@ Execute takes:
 `./fn-lang/lib/cli.js execute -l ./language-[XXX] -e ./tmp/expression.js -s ./tmp/state.json`
 ### Windows
 `node ./fn-lang/lib/cli.js execute -l ./language-[XXX] -e ./tmp/expression.js -s ./tmp/state.json`
-
-## installation
-0.
-1. cd fn-lang
-2. npm link ../language-salesforce
-3. npm link ../language-common
