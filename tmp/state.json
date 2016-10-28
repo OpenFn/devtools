@@ -1,0 +1,11 @@
+{
+  "configuration": {
+    "loginUrl": "https://login.salesforce.com", "password": "guest123", "username": "demo@openfn.org", "securityToken": "Uv9QDxe9yeiXRVSoJG9W78xTl"
+  },
+  "data" : {
+    "website": "https://www.github.com/openfn/openfn-devtools",
+    "sampleText": "I'm testing with openfn-devtools.",
+    "from": "openfn-devtools",
+    "email": "devtools@openfn.org"
+  }
+}
