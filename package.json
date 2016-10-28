@@ -1,0 +1,13 @@
+{
+  "name": "openfn-devtools",
+  "version": "0.1.0",
+  "description": "A set of tools for writing & testing expressions, managing OpenFn projects, and developing language-packages.",
+  "author": "Open Function Group",
+  "license": "GPLv3",
+  "dependencies": {
+    "diesl": "github:openfn/fn-lang#v0.5.6"
+  },
+  "engines": {
+    "node": ">= 6.5.0"
+  }
+}
