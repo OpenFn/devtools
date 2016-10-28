@@ -81,3 +81,7 @@ export function event(eventData) {
 ### Pre-Requisites
 1. [Make](http://www.gnu.org/software/make/)
 *wip*
+
+
+## Running fn-lang from anywhere
+`npm install -g github:openfn/fn-lang#v0.5.6`
