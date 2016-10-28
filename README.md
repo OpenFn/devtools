@@ -3,9 +3,8 @@ A set of tools for writing &amp; testing expressions, managing OpenFn projects,
 and developing language-packages.
 
 ## Pre-Requisites
-Make sure you have Node.js and Git installed.  
-https://nodejs.org/en/download/  
-https://git-scm.com/downloads  
+1. [Git](https://git-scm.com/downloads)
+2. [Node.js](https://nodejs.org/en/download/)
 
 ## Installation
 `git clone git@github.com:openfn/openfn-devtools.git`  
@@ -14,11 +13,17 @@ https://git-scm.com/downloads
 
 ## Usage
 Execute takes:  
-`-l [language-pack]`: The language-pack. Note that language-salesforce has a `.FakeAdaptor` that can be used to test expressions without connecting to the server.  
+`-l [language-package].Adaptor`: The language-package.
 `-e [expression.js]:` The expression being tested.  
 `-s [state.json]`: The message `data: {...}` and credential `configuration: {...}`.  
 
-### Bash
-`./fn-lang/lib/cli.js execute -l ./language-[XXX] -e ./tmp/expression.js -s ./tmp/state.json`
-### Windows
-`node ./fn-lang/lib/cli.js execute -l ./language-[XXX] -e ./tmp/expression.js -s ./tmp/state.json`
+#### `.FakeAdaptor`
+`language-salesforce` has a built-in `.FakeAdaptor` which allows a user to test
+expressions on data without sending them to a real Salesforce server. Instead of
+using `-l ./language-salesforce.Adaptor`, use `-l ./language-salesforce.FakeAdaptor`
+to test expressions offline.
+
+### Bash usage
+`./fn-lang/lib/cli.js execute -l ./language-[XXX].Adaptor -e ./tmp/expression.js -s ./tmp/state.json`
+### Windows usage
+`node ./fn-lang/lib/cli.js execute -l ./language-[XXX].Adaptor -e ./tmp/expression.js -s ./tmp/state.json`
