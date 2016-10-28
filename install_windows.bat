@@ -14,3 +14,8 @@ npm install
 cd ../
 
 ECHO Done!
+
+REM CATCH USER INPUTS
+REM echo "Please enter some input: "
+REM read input_variable
+REM echo "You entered: $input_variable"
