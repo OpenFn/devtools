@@ -7,20 +7,21 @@ and developing language-packages.
 2. [Node.js](https://nodejs.org/en/download/)
 
 ## Installation
-`git clone git@github.com:openfn/openfn-devtools.git`  
+`git clone git@github.com:openfn/openfn-devtools.git`
 `cd openfn-devtools`
-`install_[windows.bat OR bash.sh]` 
+`install_[windows.bat OR bash.sh]`
 
 ## Expression Testing Usage
-Execute takes:  
+Execute takes:
 `-l [language-package].Adaptor`: The language-package.
-`-e [expression.js]:` The expression being tested.  
-`-s [state.json]`: The message `data: {...}` and credential `configuration: {...}`.  
+`-e [expression.js]:` The expression being tested.
+`-s [state.json]`: The message `data: {...}` and credential `configuration: {...}`.
+`-o`[output.json]`: The file to which the output will be written.
 
 ### Bash usage
-`./fn-lang/lib/cli.js execute -l ./language-[XXX].Adaptor -e ./tmp/expression.js -s ./tmp/state.json`
+`./fn-lang/lib/cli.js execute -l ./language-[XXX].Adaptor -e ./tmp/expression.js -s ./tmp/state.json -o ./tmp/output.json`
 ### Windows usage
-`node ./fn-lang/lib/cli.js execute -l ./language-[XXX].Adaptor -e ./tmp/expression.js -s ./tmp/state.json`
+`node ./fn-lang/lib/cli.js execute -l ./language-[XXX].Adaptor -e ./tmp/expression.js -s ./tmp/state.json -o ./tmp/output.json`
 
 #### `.FakeAdaptor`
 `language-salesforce` has a built-in `.FakeAdaptor` which allows a user to test
@@ -31,10 +32,10 @@ to test expressions offline.
 #### Offline testing for other `language-packages`
 For most standard language packages, it's fairly easy to remove the HTTP post
 calls from the top-level function. Here's how to make the `event()` function for
-`language-dhis2` work offline:  
-`cd language-dhis2`  
+`language-dhis2` work offline:
+`cd language-dhis2`
 edit `src/Adaptor.js` using `vim` or your favorite text editor and comment out
-the `post().then()` from line 67-78:  
+the `post().then()` from line 67-78:
 ```js
 export function event(eventData) {
 
@@ -68,10 +69,10 @@ export function event(eventData) {
 
   }
 }
-```  
-`:wq` to save your work.  
-`make` to build.  
-`cd ../`  
+```
+`:wq` to save your work.
+`make` to build.
+`cd ../`
 `./fn-lang/lib/cli.js execute -l ./language-dhis2.Adaptor -e ./tmp/expression.js -s ./tmp/state.json`
 , assuming your expression calls `post()`.
 
@@ -83,5 +84,5 @@ export function event(eventData) {
 *wip*
 
 
-## Running fn-lang from anywhere
+## Running fn-lang from anywhere (`-g` for global install)
 `npm install -g github:openfn/fn-lang#v0.5.6`
