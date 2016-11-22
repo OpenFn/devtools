@@ -4,7 +4,7 @@ and developing language-packages.
 
 ## Pre-Requisites
 1. [Git](https://git-scm.com/downloads)
-2. [Node.js](https://nodejs.org/en/download/)
+2. [Node.js](https://nodejs.org/en/download/) (6.5 or higher.)
 
 ## Installation
 `git clone git@github.com:openfn/openfn-devtools.git`
