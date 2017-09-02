@@ -8,11 +8,14 @@ and developing new adaptors (language-packages).
 
 ## Basic offline job-runner usage
 You can run fn-lang from anywhere by using `npm install -g` for global install:
+
 `npm install -g github:openfn/fn-lang#v0.5.6`
 
 ## Installation
 `git clone git@github.com:openfn/openfn-devtools.git`
+
 `cd openfn-devtools`
+
 `install_[windows.bat OR bash.sh]`
 
 ## Expression Testing Usage
