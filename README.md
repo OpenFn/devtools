@@ -3,7 +3,7 @@ A set of tools for writing &amp; testing expressions, managing OpenFn projects,
 and developing new adaptors (language-packages).
 
 ## Pre-Requisites
-1. [Git](https://git-scm.com/downloads) (GitBash is recommended for Windows.)
+1. [Git](https://git-scm.com/downloads) (Use GitBash for Windows.)
 2. [Node.js](https://nodejs.org/en/download/) (Version 6.11 LTS.)
 
 ## Basic offline job-runner usage
@@ -12,50 +12,42 @@ You can run fn-lang from anywhere by using `npm install -g` for global install:
 `npm install -g github:openfn/fn-lang#v0.5.6`
 
 ## Installation
-#### SSH
-`git clone git@github.com:openfn/openfn-devtools.git`
-#### or HTTPS
-`git clone https://github.com/OpenFn/openfn-devtools.git`
+1. `git clone https://github.com/OpenFn/openfn-devtools.git`
+2. `cd openfn-devtools`
+3. (`chmod +x ./install` if permissions needed)
+4. `./install`
 
-#### bash
-1. `cd openfn-devtools`
-2. `chmod +x install_bash.sh`
-3. `./install_bash.sh`
+## Install language-packages
+1. `./install [name]`
 
-#### Windows
-0. It's recommended to use GitBash.
-1. `cd openfn-devtools`
-2. `./install_windows.bat`
+#### Example language-package installations
+1. `./install http`
+2. `./install dhis2`
+3. `./install salesforce`
+3. `./install commcare`
 
-## Expression Testing Usage
+## Usage
 Execute takes:
-`-l [language-package].Adaptor`: The language-package.
-
-`-e [expression.js]:` The expression being tested.
-
-`-s [state.json]`: The message `data: {...}` and credential `configuration: {...}`.
-
-`-o`[output.json]`: The file to which the output will be written.
+1. `-l [language-package].Adaptor`: The language-package.
+2. `-e [expression.js]:` The expression being tested.
+3. `-s [state.json]`: The message `data: {...}` and credential `configuration: {...}`.
+4. `-o [output.json]`: The file to which the output will be written.
 
 ### Bash usage
 `./fn-lang/lib/cli.js execute -l ./language-[XXX].Adaptor -e ./tmp/expression.js -s ./tmp/state.json -o ./tmp/output.json`
 
-### Windows usage
-`node ./fn-lang/lib/cli.js execute -l ./language-[XXX].Adaptor -e ./tmp/expression.js -s ./tmp/state.json -o ./tmp/output.json`
+##### `.FakeAdaptor`
+`language-salesforce` has a built-in `.FakeAdaptor` which allows a user to test expressions on data without sending them to a real Salesforce server.
 
-#### `.FakeAdaptor`
-`language-salesforce` has a built-in `.FakeAdaptor` which allows a user to test
-expressions on data without sending them to a real Salesforce server. Instead of
-using `-l ./language-salesforce.Adaptor`, use `-l ./language-salesforce.FakeAdaptor`
-to test expressions offline.
+Instead of using `-l ./language-salesforce.Adaptor`, use `-l./language-salesforce.FakeAdaptor` to test expressions offline.
 
-#### Offline testing for other `language-packages`
-For most standard language packages, it's fairly easy to remove the HTTP post
-calls from the top-level function. Here's how to make the `event()` function for
-`language-dhis2` work offline:
-`cd language-dhis2`
-edit `src/Adaptor.js` using `vim` or your favorite text editor and comment out
-the `post().then()` from line 67-78:
+##### Offline testing for other `language-packages`
+For most standard language packages, it's fairly easy to remove the HTTP post calls from the top-level function.
+
+Here's how to make the `event()` function for `language-dhis2` work offline:
+
+`cd language-dhis2` edit `src/Adaptor.js` using `vim` or your favorite text editor and comment out the `post().then()` from line 67-78:
+
 ```js
 export function event(eventData) {
 
@@ -93,8 +85,7 @@ export function event(eventData) {
 `:wq` to save your work.
 `make` to build.
 `cd ../`
-`./fn-lang/lib/cli.js execute -l ./language-dhis2.Adaptor -e ./tmp/expression.js -s ./tmp/state.json`
-, assuming your expression calls `post()`.
+`./fn-lang/lib/cli.js execute -l ./language-dhis2.Adaptor -e ./tmp/expression.js -s ./tmp/state.json`, assuming your expression calls `post()`.
 
 
 ## Modifying or Developing New `language-packages`
