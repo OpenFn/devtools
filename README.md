@@ -10,19 +10,17 @@ You can run fn-lang from anywhere by using `npm install -g` for global install:
 `npm install -g github:openfn/fn-lang#v0.5.6`
 
 ## Installation
-`git clone https://github.com/OpenFn/openfn-devtools.git`  
-`cd openfn-devtools`  
-`chmod +x ./install`  
-`./install`
+```sh
+git clone https://github.com/OpenFn/openfn-devtools.git  
+cd openfn-devtools
+chmod +x ./install  
+./install
+```
 
 ## Install language-packages
-`./install [name]`
-
-#### Example language-package installations
-`./install http`  
-`./install dhis2`  
-`./install salesforce`  
-`./install commcare`  
+```sh
+./install language-${name}
+```
 
 ## Usage
 Execute takes:

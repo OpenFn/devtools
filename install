@@ -5,12 +5,12 @@
 
 if [[ $1 ]]; then
   # install a language-package if argument is provided
-  echo installing language-$1...
-  git clone https://github.com/OpenFn/language-$1.git
-  cd language-$1
+  echo installing $1...
+  git clone https://github.com/OpenFn/$1.git
+  cd $1
   npm install
   cd ../
-  echo language-$1 installed ✓
+  echo $1 installed ✓
 else
   # base installation
   echo installing openfn-devtools...
