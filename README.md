@@ -21,12 +21,16 @@ You can run fn-lang from anywhere by using `npm install -g` for global install:
 ## Expression Testing Usage
 Execute takes:
 `-l [language-package].Adaptor`: The language-package.
+
 `-e [expression.js]:` The expression being tested.
+
 `-s [state.json]`: The message `data: {...}` and credential `configuration: {...}`.
+
 `-o`[output.json]`: The file to which the output will be written.
 
 ### Bash usage
 `./fn-lang/lib/cli.js execute -l ./language-[XXX].Adaptor -e ./tmp/expression.js -s ./tmp/state.json -o ./tmp/output.json`
+
 ### Windows usage
 `node ./fn-lang/lib/cli.js execute -l ./language-[XXX].Adaptor -e ./tmp/expression.js -s ./tmp/state.json -o ./tmp/output.json`
 
