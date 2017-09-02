@@ -6,6 +6,10 @@ and developing language-packages.
 1. [Git](https://git-scm.com/downloads)
 2. [Node.js](https://nodejs.org/en/download/) (6.5 or higher.)
 
+## Basic offline job-runner usage
+You can run fn-lang from anywhere by using `npm install -g` for global install:
+`npm install -g github:openfn/fn-lang#v0.5.6`
+
 ## Installation
 `git clone git@github.com:openfn/openfn-devtools.git`
 `cd openfn-devtools`
@@ -82,7 +86,3 @@ export function event(eventData) {
 ### Pre-Requisites
 1. [Make](http://www.gnu.org/software/make/)
 *wip*
-
-
-## Running fn-lang from anywhere (`-g` for global install)
-`npm install -g github:openfn/fn-lang#v0.5.6`
