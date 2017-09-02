@@ -3,8 +3,8 @@ A set of tools for writing &amp; testing expressions, managing OpenFn projects,
 and developing new adaptors (language-packages).
 
 ## Pre-Requisites
-1. [Git](https://git-scm.com/downloads)
-2. [Node.js](https://nodejs.org/en/download/) (6.5 or higher.)
+1. [Git](https://git-scm.com/downloads) (GitBash is recommended for Windows.)
+2. [Node.js](https://nodejs.org/en/download/) (Version 6.11 LTS.)
 
 ## Basic offline job-runner usage
 You can run fn-lang from anywhere by using `npm install -g` for global install:
@@ -23,9 +23,9 @@ You can run fn-lang from anywhere by using `npm install -g` for global install:
 3. `./install_bash.sh`
 
 #### Windows
+0. It's recommended to use GitBash.
 1. `cd openfn-devtools`
-2. [maybe make executable]
-3. `./install_windows.bat`
+2. `./install_windows.bat`
 
 ## Expression Testing Usage
 Execute takes:
