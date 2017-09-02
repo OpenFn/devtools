@@ -13,9 +13,9 @@ You can run fn-lang from anywhere by using `npm install -g` for global install:
 ```sh
 git clone https://github.com/OpenFn/openfn-devtools.git  
 cd openfn-devtools
-chmod +x ./install  
 ./install
 ```
+*If `./install` isn't permitted, `run chmod +x ./install ` then try again.*
 
 ## Install language-packages
 ```sh
