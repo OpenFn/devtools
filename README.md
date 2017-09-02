@@ -12,7 +12,10 @@ You can run fn-lang from anywhere by using `npm install -g` for global install:
 `npm install -g github:openfn/fn-lang#v0.5.6`
 
 ## Installation
+#### SSH
 `git clone git@github.com:openfn/openfn-devtools.git`
+#### or HTTPS
+`git clone https://github.com/OpenFn/openfn-devtools.git`
 
 `cd openfn-devtools`
 
