@@ -21,10 +21,10 @@ You can run fn-lang from anywhere by using `npm install -g` for global install:
 1. `./install [name]`
 
 #### Example language-package installations
-1. `./install http`
-2. `./install dhis2`
-3. `./install salesforce`
-3. `./install commcare`
+- `./install http`
+- `./install dhis2`
+- `./install salesforce`
+- `./install commcare`
 
 ## Usage
 Execute takes:
@@ -36,17 +36,19 @@ Execute takes:
 ### Bash usage
 `./fn-lang/lib/cli.js execute -l ./language-[XXX].Adaptor -e ./tmp/expression.js -s ./tmp/state.json -o ./tmp/output.json`
 
-##### `.FakeAdaptor`
+#### `.FakeAdaptor`
 `language-salesforce` has a built-in `.FakeAdaptor` which allows a user to test expressions on data without sending them to a real Salesforce server.
 
 Instead of using `-l ./language-salesforce.Adaptor`, use `-l./language-salesforce.FakeAdaptor` to test expressions offline.
 
-##### Offline testing for other `language-packages`
+#### Offline testing for other `language-packages`
 For most standard language packages, it's fairly easy to remove the HTTP post calls from the top-level function.
 
-Here's how to make the `event()` function for `language-dhis2` work offline:
+###### Here's how to make the `event()` function for `language-dhis2` work offline:
 
-`cd language-dhis2` edit `src/Adaptor.js` using `vim` or your favorite text editor and comment out the `post().then()` from line 67-78:
+`cd language-dhis2` edit `src/Adaptor.js` using `vim` or your favorite text editor
+
+comment out the `post().then()` from line 67-78:
 
 ```js
 export function event(eventData) {
@@ -83,9 +85,14 @@ export function event(eventData) {
 }
 ```
 `:wq` to save your work.
+
 `make` to build.
+
 `cd ../`
-`./fn-lang/lib/cli.js execute -l ./language-dhis2.Adaptor -e ./tmp/expression.js -s ./tmp/state.json`, assuming your expression calls `post()`.
+
+`./fn-lang/lib/cli.js execute -l ./language-dhis2.Adaptor -e ./tmp/expression.js -s ./tmp/state.json`
+
+^^ This assumes your expression calls `post()`
 
 
 ## Modifying or Developing New `language-packages`
