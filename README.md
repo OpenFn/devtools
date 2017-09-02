@@ -15,7 +15,7 @@ git clone https://github.com/OpenFn/openfn-devtools.git
 cd openfn-devtools
 ./install
 ```
-*If `./install` isn't permitted, `run chmod +x ./install ` then try again.*
+If you get a "permission denied" message when running `./install`, run `run chmod +x ./install ` then retry the install command.
 
 ## Install language-packages
 ```sh
