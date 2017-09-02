@@ -1,6 +1,6 @@
-# openfn-devtools
+# OpenFn Devtools
 A set of tools for writing &amp; testing expressions, managing OpenFn projects,
-and developing language-packages.
+and developing new adaptors (language-packages).
 
 ## Pre-Requisites
 1. [Git](https://git-scm.com/downloads)
