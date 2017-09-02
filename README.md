@@ -17,9 +17,15 @@ You can run fn-lang from anywhere by using `npm install -g` for global install:
 #### or HTTPS
 `git clone https://github.com/OpenFn/openfn-devtools.git`
 
-`cd openfn-devtools`
+#### bash
+1. `cd openfn-devtools`
+2. `chmod +x install_bash.sh`
+3. `./install_bash.sh`
 
-`install_[windows.bat OR bash.sh]`
+#### Windows
+1. `cd openfn-devtools`
+2. [maybe make executable]
+3. `./install_windows.bat`
 
 ## Expression Testing Usage
 Execute takes:
