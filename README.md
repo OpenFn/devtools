@@ -6,8 +6,8 @@ A set of tools for writing &amp; testing expressions, managing OpenFn projects, 
 [Node.js](https://nodejs.org/en/download/) (Version 6.11 LTS.)
 
 ## Basic offline job-runner usage
-You can run fn-lang from anywhere by using `npm install -g` for global install:  
-`npm install -g github:openfn/fn-lang#v0.5.6`
+You can run core from anywhere by using `npm install -g` for global install:  
+`npm install -g github:openfn/core#v0.6.1`
 
 ## Installation
 ```sh
@@ -30,11 +30,12 @@ Execute takes:
 4. `-o [output.json]`: The file to which the output will be written.
 
 ### Bash usage
-`./fn-lang/lib/cli.js execute -l ./language-[XXX].Adaptor -e ./tmp/expression.js -s ./tmp/state.json -o ./tmp/output.json`
+`./core/lib/cli.js execute -l ./language-[XXX].Adaptor -s ./tmp/state.json -o ./tmp/output.json -e ./tmp/expression.js`
 
 #### `.FakeAdaptor`
 `language-salesforce` has a built-in `.FakeAdaptor` which allows a user to test expressions on data without sending them to a real Salesforce server.  
-Instead of using `-l ./language-salesforce.Adaptor`, use `-l./language-salesforce.FakeAdaptor` to test expressions offline.
+Instead of using `-l ./language-salesforce.Adaptor`, use `-l./language-salesforce.FakeAdaptor` to test expressions offline:
+`./core/lib/cli.js execute -l ./language-salesforce.FakeAdaptor -s ./tmp/state.json -o ./tmp/output.json -e ./tmp/expression.js`
 
 #### Offline testing for other `language-packages`
 For most standard language packages, it's fairly easy to remove the HTTP post calls from the top-level function.
@@ -79,7 +80,7 @@ export function event(eventData) {
 `:wq` to save your work.  
 `make` to build.  
 `cd ../`  
-`./fn-lang/lib/cli.js execute -l ./language-dhis2.Adaptor -e ./tmp/expression.js -s ./tmp/state.json`  
+`./core/lib/cli.js execute -l ./language-dhis2.Adaptor -e ./tmp/expression.js -s ./tmp/state.json`  
 ^^ This assumes your expression calls `post()`
 
 ## Modifying or Developing New `language-packages`
