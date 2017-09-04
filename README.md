@@ -1,4 +1,4 @@
-# OpenFn Devtools
+# OpenFn Devtools [![Build Status](https://travis-ci.org/OpenFn/openfn-devtools.svg?branch=master)](https://travis-ci.org/OpenFn/openfn-devtools)
 A set of tools for writing &amp; testing expressions, managing OpenFn projects, and developing new adaptors (language-packages).
 
 ## Pre-Requisites
@@ -13,13 +13,13 @@ You can run core from anywhere by using `npm install -g` for global install:
 ```sh
 git clone https://github.com/OpenFn/openfn-devtools.git  
 cd openfn-devtools
-./install
+./install.sh
 ```
-If you get a "permission denied" message when running `./install`, run `run chmod +x ./install ` then retry the install command.
+If you get a "permission denied" message when running `./install.sh`, run `run chmod +x ./install.sh ` then retry the install command.
 
 ## Install language-packages
 ```sh
-./install language-${name}
+./install.sh language-${name}
 ```
 
 ## Usage
