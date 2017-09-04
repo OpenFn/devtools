@@ -5,4 +5,3 @@ before_script:
 
 script:
     - bash tests/installer_tests.sh
-    - bash tests/core_tests.sh
