@@ -1,6 +1,6 @@
-[submodule "fn-lang"]
-	path = fn-lang
-	url = https://github.com/OpenFn/fn-lang.git
+[submodule "core"]
+	path = core
+	url = https://github.com/OpenFn/core.git
 	branch = master
 [submodule "language-common"]
 	path = language-common
