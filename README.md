@@ -7,7 +7,7 @@ A set of tools for writing &amp; testing expressions, managing OpenFn projects, 
 
 ## Basic offline job-runner usage
 You can run core from anywhere by using `npm install -g` for global install:  
-`npm install -g github:openfn/core#v0.6.1`
+`npm install -g github:openfn/core#v0.6.2`
 
 ## Installation
 ```sh
@@ -31,6 +31,10 @@ Execute takes:
 
 ### Bash usage
 `./core/lib/cli.js execute -l ./language-[XXX].Adaptor -s ./tmp/state.json -o ./tmp/output.json -e ./tmp/expression.js`
+
+### The `--test` option
+`./core/lib/cli.js execute -l ./language-[XXX].Adaptor -s ./tmp/state.json -o ./tmp/output.json -e ./tmp/expression.js --test`  
+This intercepts all HTTP requests and displays the request information for debugging.
 
 #### `.FakeAdaptor`
 `language-salesforce` has a built-in `.FakeAdaptor` which allows a user to test expressions on data without sending them to a real Salesforce server.  
