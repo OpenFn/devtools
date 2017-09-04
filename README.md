@@ -32,6 +32,10 @@ Execute takes:
 ### Bash usage
 `./core/lib/cli.js execute -l ./language-[XXX].Adaptor -s ./tmp/state.json -o ./tmp/output.json -e ./tmp/expression.js`
 
+### The `--test` option
+`./core/lib/cli.js execute -l ./language-[XXX].Adaptor -s ./tmp/state.json -o ./tmp/output.json -e ./tmp/expression.js --test`  
+This intercepts all HTTP requests and displays the request information for debugging.
+
 #### `.FakeAdaptor`
 `language-salesforce` has a built-in `.FakeAdaptor` which allows a user to test expressions on data without sending them to a real Salesforce server.  
 Instead of using `-l ./language-salesforce.Adaptor`, use `-l./language-salesforce.FakeAdaptor` to test expressions offline:
