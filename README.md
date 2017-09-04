@@ -7,7 +7,7 @@ A set of tools for writing &amp; testing expressions, managing OpenFn projects, 
 
 ## Basic offline job-runner usage
 You can run core from anywhere by using `npm install -g` for global install:  
-`npm install -g github:openfn/core#v0.6.1`
+`npm install -g github:openfn/core#v0.6.2`
 
 ## Installation
 ```sh
