@@ -21,7 +21,7 @@ else
   npm install
   cd ../
 
-  cd fn-lang
+  cd core
   npm install
   cd ../
 
