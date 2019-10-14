@@ -1,10 +1,6 @@
 {
   "name": "openfn-devtools",
   "version": "1.0.0",
-  "main": "lib/index.js",
-  "scripts": {
-    "test": "bash tests/installer_tests.sh"
-  },
   "author": "Open Function Group",
   "license": "LGPL-3.0"
 }
