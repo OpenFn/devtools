@@ -3,7 +3,7 @@ A set of tools for writing &amp; testing expressions, managing OpenFn projects, 
 
 ## Pre-Requisites
 [Git](https://git-scm.com/downloads) (Use GitBash for Windows.)  
-[Node.js](https://nodejs.org/en/download/) (Version 6.11 LTS.)
+[Node.js](https://nodejs.org/en/download/) (Version 6.11 or greater.)
 
 ## Basic offline job-runner usage
 You can run core from anywhere by using `npm install -g` for global install:  

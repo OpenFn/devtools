@@ -19,10 +19,21 @@ else
 
   cd language-common
   npm install
+  echo language-common installed ✓
+  cd ../
+
+  cd language-http
+  echo language-http installed ✓
+  npm install
   cd ../
 
   cd core
   npm install
+  cd ../
+
+  mkdir tmp
+  cd tmp
+
   cd ../
 
   echo openfn-devtools installed ✓
