@@ -1,9 +1,0 @@
-[submodule "core"]
-	path = core
-	url = https://github.com/openfn/core.git
-[submodule "language-common"]
-	path = language-common
-	url = https://github.com/openfn/language-common.git
-[submodule "language-http"]
-	path = language-http
-	url = https://github.com/openfn/language-http.git

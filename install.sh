@@ -10,31 +10,33 @@ if [[ $1 ]]; then
   cd $1
   npm install
   cd ../
-  echo $1 installed ✓
+  echo adaptor $1 installed ✓
 else
   # base installation
   echo installing openfn-devtools...
-  git submodule init
-  git submodule update
-
-  cd language-common
-  npm install
-  echo language-common installed ✓
-  cd ../
-
-  cd language-http
-  echo language-http installed ✓
-  npm install
-  cd ../
-
+  git clone https://github.com/OpenFn/core.git
+  git clone https://github.com/OpenFn/language-common.git
+  git clone https://github.com/OpenFn/language-http.git
+  
   cd core
   npm install
+  echo OpenFn/core installed ✓
   cd ../
-
+  
+  cd language-common
+  npm install
+  echo common adaptor installed ✓
+  cd ../
+  
+  cd language-http
+  echo http adaptor installed ✓
+  npm install
+  cd ../
+  
   mkdir tmp
   cd tmp
-
+  
   cd ../
-
+  
   echo openfn-devtools installed ✓
 fi
