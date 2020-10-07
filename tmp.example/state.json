@@ -1,14 +1,31 @@
 {
   "configuration": {
-    "loginUrl": "https://login.salesforce.com",
-    "password": "guest123",
-    "username": "demo@openfn.org",
-    "securityToken": "Uv9QDxe9yeiXRVSoJG9W78xTl"
+    "hostUrl": "https://play.dhis2.org/2.34.1",
+    "password": "district",
+    "username": "admin"
   },
-  "data" : {
-    "website": "https://www.github.com/openfn/openfn-devtools",
-    "sampleText": "I'm testing with openfn-devtools.",
-    "from": "openfn-devtools",
-    "email": "devtools@openfn.org"
+  "data": {
+    "dataSource": [
+      "CommCare",
+      "KoboToolbox",
+      "Open Data Kit",
+      "MedicMobile",
+      "Ona.io",
+      "SurveyCTO",
+      "etc."
+    ],
+    "case": {
+      "firstName": "Sample",
+      "lastName": "Testonly",
+      "status": "for_referral",
+      "organization": "district_health_services",
+      "services_requested": ["child_protection_program", "awareness_campaign"]
+    },
+    "metadata": {
+      "timeStart": "2020-10-07T13:00:21.132242Z",
+      "uuid": "2435c04e-3bd6-4236-942a-cfc5623497db"
+    },
+    "email": "mamadou@openfn.org",
+    "formType": "case"
   }
 }

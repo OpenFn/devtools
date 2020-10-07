@@ -34,9 +34,7 @@ else
   cd ../
   
   mkdir tmp
-  cd tmp
-  
-  cd ../
+  cp -r tmp.example tmp
   
   echo openfn-devtools installed ✓
 fi
