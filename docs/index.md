@@ -1,34 +1,23 @@
-# OpenFn Devtools
+# OpenFn/devtools
 
 A set of tools for writing &amp; testing expressions, managing OpenFn projects,
 and developing new adaptors (language-packages).
 
-## Pre-Requisites
+## Up and running
 
-[Git](https://git-scm.com/downloads) (Use GitBash for Windows.)  
-[Node.js](https://nodejs.org/en/download/) (Version 6.11 or greater.)
+1. Make sure you've got [git](https://git-scm.com/downloads) (maybe GitBash for Windows?)
+2. And [Node.js](https://nodejs.org/en/download/) (version 6.11 or greater)
+3. Run `git clone git@github.com:OpenFn/devtools.git` for SSH or `git clone https://github.com/OpenFn/devtools.git`
+4. Run `cd devtools`
+5. Run `./install.sh` to install core, language-common, and language-http
 
-## Basic offline job-runner usage
+_Note: If you get a "permission denied" message when running `./install.sh`, try
+`run chmod +x ./install.sh ` then retry the install command._
 
-You can run core from anywhere by using `npm install -g` for global install:  
-`npm install -g github:openfn/core#v1.3.8`
+To install specific adaptors, run `./install.sh language-${name}`
 
-## Installation
-
-```sh
-git clone https://github.com/OpenFn/openfn-devtools.git
-cd openfn-devtools
-./install.sh
-```
-
-If you get a "permission denied" message when running `./install.sh`, run
-`run chmod +x ./install.sh ` then retry the install command.
-
-## Install adaptors
-
-```sh
-./install.sh language-${name}
-```
+You can run core from anywhere by using `npm install -g` for global install
+`npm install -g github:openfn/core#master`
 
 ## Usage
 

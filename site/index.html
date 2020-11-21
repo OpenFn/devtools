@@ -19,7 +19,7 @@
     
     
       
-        <title>OpenFn Devtools [![Build Status](https://travis-ci.org/OpenFn/openfn-devtools.svg?branch=master)](https://travis-ci.org/OpenFn/openfn-devtools) - OpenFn/devtools</title>
+        <title>Home - OpenFn/devtools</title>
       
     
     
@@ -66,7 +66,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#openfn-devtools" class="md-skip">
+        <a href="#openfndevtools" class="md-skip">
           Skip to content
         </a>
       
@@ -95,7 +95,7 @@
           </span>
           <span class="md-header-nav__topic md-ellipsis">
             
-              OpenFn Devtools [![Build Status](https://travis-ci.org/OpenFn/openfn-devtools.svg?branch=master)](https://travis-ci.org/OpenFn/openfn-devtools)
+              Home
             
           </span>
         </div>
@@ -192,37 +192,26 @@
       
       
 
+  
 
-  <li class="md-nav__item">
-    <a href="README.md" class="md-nav__link">
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+      
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        Home
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+    
+    <a href="index.html" class="md-nav__link md-nav__link--active">
       Home
     </a>
-  </li>
-
     
       
-      
-      
-
-
-  <li class="md-nav__item">
-    <a href="DEPLOY.md" class="md-nav__link">
-      Deploying
-    </a>
-  </li>
-
-    
-  </ul>
-</nav>
-                  </div>
-                </div>
-              </div>
-            
-            
-              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
-                <div class="md-sidebar__scrollwrap">
-                  <div class="md-sidebar__inner">
-                    
 <nav class="md-nav md-nav--secondary" aria-label="Table of contents">
   
   
@@ -236,29 +225,8 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#pre-requisites" class="md-nav__link">
-    Pre-Requisites
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#basic-offline-job-runner-usage" class="md-nav__link">
-    Basic offline job-runner usage
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#installation" class="md-nav__link">
-    Installation
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#install-adaptors" class="md-nav__link">
-    Install adaptors
+  <a href="#up-and-running" class="md-nav__link">
+    Up and running
   </a>
   
 </li>
@@ -319,7 +287,123 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#pre-requisites_1" class="md-nav__link">
+  <a href="#pre-requisites" class="md-nav__link">
+    Pre-Requisites
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+    
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="deploying.html" class="md-nav__link">
+      Deploying
+    </a>
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#up-and-running" class="md-nav__link">
+    Up and running
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#usage" class="md-nav__link">
+    Usage
+  </a>
+  
+    <nav class="md-nav" aria-label="Usage">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bash-usage" class="md-nav__link">
+    Bash usage
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-test-option" class="md-nav__link">
+    The --test option
+  </a>
+  
+    <nav class="md-nav" aria-label="The --test option">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#fakeadaptor" class="md-nav__link">
+    .FakeAdaptor
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#offline-testing-for-other-language-packages" class="md-nav__link">
+    Offline testing for other language-packages
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#modifying-or-developing-new-adaptors" class="md-nav__link">
+    Modifying or developing new adaptors
+  </a>
+  
+    <nav class="md-nav" aria-label="Modifying or developing new adaptors">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pre-requisites" class="md-nav__link">
     Pre-Requisites
   </a>
   
@@ -347,29 +431,22 @@
                   </a>
                 
                 
-                <h1 id="openfn-devtools">OpenFn Devtools <a href="https://travis-ci.org/OpenFn/openfn-devtools"><img alt="Build Status" src="https://travis-ci.org/OpenFn/openfn-devtools.svg?branch=master" /></a><a class="headerlink" href="#openfn-devtools" title="Permanent link">#</a></h1>
+                <h1 id="openfndevtools">OpenFn/devtools<a class="headerlink" href="#openfndevtools" title="Permanent link">#</a></h1>
 <p>A set of tools for writing &amp; testing expressions, managing OpenFn projects,
 and developing new adaptors (language-packages).</p>
-<h2 id="pre-requisites">Pre-Requisites<a class="headerlink" href="#pre-requisites" title="Permanent link">#</a></h2>
-<p><a href="https://git-scm.com/downloads">Git</a> (Use GitBash for Windows.)<br />
-<a href="https://nodejs.org/en/download/">Node.js</a> (Version 6.11 or greater.)</p>
-<h2 id="basic-offline-job-runner-usage">Basic offline job-runner usage<a class="headerlink" href="#basic-offline-job-runner-usage" title="Permanent link">#</a></h2>
-<p>You can run core from anywhere by using <code>npm install -g</code> for global install:<br />
-<code>npm install -g github:openfn/core#v1.3.8</code></p>
-<h2 id="installation">Installation<a class="headerlink" href="#installation" title="Permanent link">#</a></h2>
-<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
-2
-3</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code>git clone https://github.com/OpenFn/openfn-devtools.git
-<span class="nb">cd</span> openfn-devtools
-./install.sh
-</code></pre></div>
-</td></tr></table>
-<p>If you get a "permission denied" message when running <code>./install.sh</code>, run
-<code>run chmod +x ./install.sh</code> then retry the install command.</p>
-<h2 id="install-adaptors">Install adaptors<a class="headerlink" href="#install-adaptors" title="Permanent link">#</a></h2>
-<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code>./install.sh language-<span class="si">${</span><span class="nv">name</span><span class="si">}</span>
-</code></pre></div>
-</td></tr></table>
+<h2 id="up-and-running">Up and running<a class="headerlink" href="#up-and-running" title="Permanent link">#</a></h2>
+<ol>
+<li>Make sure you've got <a href="https://git-scm.com/downloads">git</a> (maybe GitBash for Windows?)</li>
+<li>And <a href="https://nodejs.org/en/download/">Node.js</a> (version 6.11 or greater)</li>
+<li>Run <code>git clone git@github.com:OpenFn/devtools.git</code> for SSH or <code>git clone https://github.com/OpenFn/devtools.git</code></li>
+<li>Run <code>cd devtools</code></li>
+<li>Run <code>./install.sh</code> to install core, language-common, and language-http</li>
+</ol>
+<p><em>Note: If you get a "permission denied" message when running <code>./install.sh</code>, try
+<code>run chmod +x ./install.sh</code> then retry the install command.</em></p>
+<p>To install specific adaptors, run <code>./install.sh language-${name}</code></p>
+<p>You can run core from anywhere by using <code>npm install -g</code> for global install
+<code>npm install -g github:openfn/core#master</code></p>
 <h2 id="usage">Usage<a class="headerlink" href="#usage" title="Permanent link">#</a></h2>
 <p>Execute takes:</p>
 <ol>
@@ -395,7 +472,7 @@ use <code>-l./language-salesforce.FakeAdaptor</code> to test expressions offline
 calls from the top-level function.</p>
 <h2 id="modifying-or-developing-new-adaptors">Modifying or developing new adaptors<a class="headerlink" href="#modifying-or-developing-new-adaptors" title="Permanent link">#</a></h2>
 <p><em>wip</em></p>
-<h3 id="pre-requisites_1">Pre-Requisites<a class="headerlink" href="#pre-requisites_1" title="Permanent link">#</a></h3>
+<h3 id="pre-requisites">Pre-Requisites<a class="headerlink" href="#pre-requisites" title="Permanent link">#</a></h3>
 <ol>
 <li><a href="http://www.gnu.org/software/make/">Make</a> is used so that our modern (es9)
    JavaScript can be run on older Node runtimes.</li>
@@ -415,6 +492,27 @@ calls from the top-level function.</p>
       
         
 <footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid" aria-label="Footer">
+        
+        
+          <a href="deploying.html" class="md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-footer-nav__title">
+              <div class="md-ellipsis">
+                <span class="md-footer-nav__direction">
+                  Next
+                </span>
+                Deploying
+              </div>
+            </div>
+            <div class="md-footer-nav__button md-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    </div>
   
   <div class="md-footer-meta md-typeset">
     <div class="md-footer-meta__inner md-grid">
