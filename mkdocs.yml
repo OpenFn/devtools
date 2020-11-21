@@ -35,8 +35,8 @@ theme:
     code: 'Roboto Mono'
 
 nav:
-  - 'Home': index.md
-  - 'Deploying': deploying.md
+  - 'Documentation': index.md
+  - 'Extras': deploying.md
 
 # Options
 extra:

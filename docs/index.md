@@ -41,8 +41,9 @@ debugging.
 
 #### `.FakeAdaptor`
 
-`language-salesforce` has a built-in `.FakeAdaptor` which allows a user to test
-expressions on data without sending them to a real Salesforce server.
+Adaptors may provide dummy modules for testing. `language-salesforce` has a
+built-in `.FakeAdaptor` which allows a user to test expressions on data without
+sending them to a real Salesforce server.
 
 Instead of using `-l ./language-salesforce.Adaptor`,
 use `-l./language-salesforce.FakeAdaptor` to test expressions offline:
@@ -50,8 +51,8 @@ use `-l./language-salesforce.FakeAdaptor` to test expressions offline:
 
 #### Offline testing for other `language-packages`
 
-For most standard language packages, it's fairly easy to remove the HTTP post
-calls from the top-level function.
+For most standard language packages which make use of HTTP requests, you can add
+`--test` to the execute command to intercept all HTTP requests.
 
 ## Modifying or developing new adaptors
 

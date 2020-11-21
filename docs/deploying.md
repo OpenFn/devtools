@@ -1,6 +1,4 @@
-# Deploying to OpenFn/platform instances
-
-Build and testing workspace for OpenFn Language Packs
+# Extra tools for adaptors
 
 ## Scripts
 
@@ -57,13 +55,13 @@ Arguments `./scripts/upload-release -i <file> [-u]`
 - `i` - Path to build file to upload
 - `u` - Update a file if already exists (and is a different size)
 
-## repos file
+## A repos file for quick setup
 
 Located in the root of the project, this file is a list of language pack
 git repo names used by the scripts in order to check out the packages
 from Github.
 
-## Releasing a new Language Pack
+## Releasing a new adaptor version
 
 1. **Bump the version in `package.json`**
 
@@ -103,12 +101,8 @@ from Github.
    This script expects a `GH_TOKEN` env variable, which is an OAuth2 token you
    must get from Github (via the account page)
 
-8. **Add the version to core**
+## Using a new adaptor in an OpenFn/platform instance
 
-   1. Add your release to the `scripts/install-language-packs` script.
-   2. Add the version number to `priv/adaptors.json`.
-   3. Add the `bodySchema` to `CredentialView.js`.
-
-   During the application build step, the `install-language-packs` script is run
-   which downloads all the listed language packs, and symlinks the newest as a
-   default.
+1. Add your release to the `scripts/install-lp` script.
+2. Add the version number to `priv/adaptors.json`.
+3. Add the `bodySchema` to `CredentialView.js`.
