@@ -1,3 +1,7 @@
-tmp
+adaptor/
+builds
+core/
 language-*
+node_modules
 shunit*
+tmp/

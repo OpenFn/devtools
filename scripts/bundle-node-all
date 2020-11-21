@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+while read repo
+do
+  $( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/bundle-node $repo -o builds
+done < repos

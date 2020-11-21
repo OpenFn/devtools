@@ -1,0 +1,33 @@
+#!/usr/bin/env node
+
+const dq = require('doclet-query');
+const fs = require('fs');
+
+const files = fs.readdirSync("doclets").map(f => `doclets/${f}`)
+
+for (var i = 0, l = files.length; i < l; i++) {
+  var docletPath = files[i];
+
+  const docletData = JSON.parse(fs.readFileSync(docletPath, 'utf8'));
+
+  const docletPackage = dq.createTree(docletData);
+
+  console.log(`\n# ${docletPath}`);
+  console.log(`${Object.keys(docletPackage).length} package/s found.`);
+
+  // TODO: use └── on last item
+  Object.keys(docletPackage)
+    .map(p => {
+      const packageNode = docletPackage[p]
+      console.log(`• ${ packageNode.doclet.name }`);
+      Object.keys(packageNode.modules).map((k,i) => {
+        const moduleNode = packageNode.modules[k]
+        console.log(`├── ${k}`);
+        Object.keys(moduleNode.exports).map((k,i) => {
+          const memberNode = moduleNode.exports[k]
+          console.log(`│   ├── ${k}`);
+        })
+      })
+    });
+
+}

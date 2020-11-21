@@ -1,0 +1,147 @@
+#!/usr/bin/env node
+const child_process = require('child_process');
+const path = require('path');
+
+let argv;
+try {
+  argv = require('minimist')(process.argv.slice(2));
+} catch (e) {
+  console.log(e.message);
+  console.log("Ensure all dependencies have been installed via: `npm install`");
+  process.exit(1);
+}
+
+let languagePackDir, languagePack, outputDir, debug;
+
+try {
+  // Get the language pack module name from the last argument.
+  languagePackDir = process.cwd() + '/' + argv._[0]
+  // Load the package.json
+  languagePack = require(`${ languagePackDir }/package.json`)
+
+  // If an output path is specified, resolve it against the pwd or default
+  // to the current folder.
+  if (argv.o) {
+    outputDir = path.resolve(process.cwd(),argv.o);
+  } else {
+    outputDir = process.cwd();
+  }
+
+  debug = argv.d || false;
+} catch (e) {
+  console.log(e.message);
+  process.exit(1);
+}
+
+// Generic Promise wrapper for child_process.exec.
+function exec(cmd, opts={}) {
+  return new Promise(function(resolve, reject) {
+    child_process.exec(cmd, opts, function(err, stdout, stderr) {
+      if (err) {
+        return reject(new Error(stderr))
+      }
+      resolve(stdout)
+    })
+  })
+}
+
+// Creates a temporary directory.
+function mktemp() {
+  return exec('mktemp -d').
+    then(stdout => stdout.trim()).
+    then(tmpDir => {
+      console.log(`Created temp directory: ${tmpDir}`);
+      return tmpDir;
+    })
+}
+
+// Given a path to a node module, call `npm pack` and return the path of the
+// tarball that is created.
+function pack(modulePath) {
+  modulePath = modulePath.trim();
+  return exec(`npm pack`, { cwd: modulePath }).
+    then(packName => {
+      packName = packName.trim();
+      console.log(`Created tarball of module using npm-pack`);
+      return packName;
+    }).
+    // Return the path of where `npm pack` created the tarball
+    then(packName => `${modulePath}/${packName}`)
+}
+
+// Given a path to a package tarball, untar it to a destination directory.
+function unpack({ packPath, destDir }) {
+  return exec(`tar -xpf ${packPath} -C ${destDir}`).
+    then(stdout => console.log(`Unpacked module to: ${destDir}`))
+}
+
+// Given a path to a node module, run `npm install` with the bundle flag
+// and in production mode. This ensures only runtime dependencies are installed.
+function installDeps(path) {
+  process.stdout.write("Installing production dependencies... ");
+  return exec(`npm install -B`, {
+    env: Object.assign({ NODE_ENV: 'production' }, process.env),
+    cwd: path
+  }).then(stdout => {
+    process.stdout.write("✓\n");
+    console.log(stdout.trim());
+  })
+}
+
+function buildAST(packPath, destDir) {
+  process.stdout.write("Building OpenFn AST... \n");
+  return exec(`node ./node_modules/simple-ast/lib/generate.js --adaptor ${packPath}/lib/Adaptor.js --output ${destDir}/ast.json`)
+  .then(stdout => {
+    console.log(stdout.trim());
+    process.stdout.write("✓\n");
+  })
+}
+
+// Deletes all paths provided.
+function cleanup(paths) {
+  return paths.reduce(
+    (acc, p) => acc.then(() => exec(`rm -rf ${p}`)),
+    Promise.resolve(process.stdout.write("Cleaning up... "))
+  ).then(() => process.stdout.write("✓\n"))
+}
+
+// Creates a version suffixed tarball of a target module.
+function tar({ target, name, dest }) {
+  process.stdout.write("Creating tarball... ");
+
+  const targetBase = require('url').resolve(target,name)
+  // Rename the target folder to the name of the package, so when it's
+  // extracted it gets put in a folder: `<module>-<version>`
+  return exec(`mv ${target} ${targetBase}`)
+    .then(() => {
+      return exec(`tar -czf ${dest}/${name}.tgz ${path.basename(targetBase)}`, {
+        cwd: path.dirname(targetBase)
+      })
+    })
+    .then(() => process.stdout.write("✓\n"))
+}
+
+mktemp()
+  .then(tmpDir => {
+    return pack(languagePackDir)
+      .then(packPath => {
+        return unpack({ packPath, destDir: tmpDir })
+          .then(() => cleanup([packPath]))
+      })
+      .then(() => installDeps(`${tmpDir}/package`))
+      .then(() => buildAST(languagePackDir, `${tmpDir}/package`))
+      .then(() => tar({
+        target: `${tmpDir}/package`,
+        name: `${languagePack.name}-v${languagePack.version}`,
+        dest: outputDir
+      }))
+      .then(() => { if (!debug) cleanup([tmpDir]) })
+  })
+  .then(() => console.log("Succesfully bundled module."))
+  .catch(err => {
+    process.stdout.write("✗\n")
+    console.error(err.message);
+    if (debug) console.error(err.stack);
+
+    process.exitCode = 1;
+  })

@@ -1,0 +1,29 @@
+#!/usr/bin/env node
+
+const jsdoc = require('jsdoc-api');
+const fs = require('fs');
+
+const repos = fs.readFileSync('repos', 'utf8').split("\n")
+  .filter(Boolean)
+
+function explainAndWrite(packageName) {
+  jsdoc.explain({
+    files: `${packageName}/src/*`,
+    package: `${packageName}/package.json`
+  }).then(function(result) {
+    const data = JSON.stringify(result, null, 2);
+    fs.writeFileSync(`doclets/${packageName}.json`, data)
+  }).catch(function(e) {
+    console.log(e.message);
+    process.exitCode = 1;
+  })
+}
+
+for (var i = 0, l = repos.length; i < l; i++) {
+  var packageName = repos[i];
+  
+  if (process.exitCode > 0)
+    break;
+  
+  explainAndWrite(packageName)
+}

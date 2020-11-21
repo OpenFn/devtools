@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+
+while read repo
+do
+  if [[ ! -d "$repo" ]]; then
+    echo "Cloning $repo..."
+    git clone --depth=1 "git@github.com:OpenFn/$repo.git"
+  fi
+
+  if [[ ! -f "$repo/.git/hooks/post-commit" ]]; then
+    echo "Adding post-commit hook to $repo..."
+    cp scripts/post-commit "$repo/.git/hooks/post-commit"
+  fi
+done < repos
+
+# Ensure we have a doclets directory
+mkdir -p doclets
+
+# Ensure we have a builds directory
+mkdir -p builds
+
+# Get node dependencies
+npm install

@@ -34,7 +34,8 @@ else
   cd ../
   
   mkdir tmp
-  cp -r tmp.example tmp
+  cp tmp.example/expression.js tmp
+  cp tmp.example/state.json tmp
   
   echo openfn-devtools installed ✓
 fi

@@ -1,0 +1,108 @@
+#!/usr/bin/env node
+const child_process = require('child_process');
+const path = require('path');
+const fs = require('fs')
+var parser = require('xml2json');
+
+let argv;
+try {
+  argv = require('minimist')(process.argv.slice(2));
+} catch (e) {
+  console.log(e.message);
+  console.log("Ensure all dependencies have been installed via: `npm install`");
+  process.exit(1);
+}
+
+let languagePackDir, languagePack, outputDir, debug;
+
+try {
+  // Get the language pack module name from the last argument.
+  languagePackDir = process.cwd() + '/' + argv._[0]
+  const pom = fs.readFileSync(languagePackDir + '/pom.xml')
+  languagePack = parser.toJson(pom, {
+    object: true
+  }).project;
+
+  console.log(languagePack);
+
+  // If an output path is specified, resolve it against the pwd or default
+  // to the current folder.
+  if (argv.o) {
+    outputDir = path.resolve(process.cwd(),argv.o);
+  } else {
+    outputDir = process.cwd();
+  }
+
+  debug = argv.d || false;
+} catch (e) {
+  console.log(e.message);
+  process.exit(1);
+}
+
+// Generic Promise wrapper for child_process.exec.
+function exec(cmd, opts={}) {
+  return new Promise(function(resolve, reject) {
+    child_process.exec(cmd, opts, function(err, stdout, stderr) {
+      if (err) {
+        return reject(new Error(stderr))
+      }
+      resolve(stdout)
+    })
+  })
+}
+
+// Creates a temporary directory.
+function mktemp() {
+  return exec('mktemp -d').
+    then(stdout => stdout.trim()).
+    then(tmpDir => {
+      console.log(`Created temp directory: ${tmpDir}`);
+      return tmpDir;
+    })
+}
+
+// Given a path to a node module, call `npm pack` and return the path of the
+// tarball that is created.
+function pack(shortName, name, modulePath, tmpDir) {
+  modulePath = modulePath.trim();
+  return exec(`mkdir ${tmpDir}/${name}/ && cp ${modulePath}/target/${shortName}-jar-with-dependencies.jar ${tmpDir}/${name}/execute.jar`)
+}
+
+// Deletes all paths provided.
+function cleanup(paths) {
+  return paths.reduce(
+    (acc, p) => acc.then(() => exec(`rm -rf ${p}`)),
+    Promise.resolve(process.stdout.write("Cleaning up... "))
+  ).then(() => process.stdout.write("✓\n"))
+}
+
+// Creates a version suffixed tarball of a target module.
+function tar({ target, name, dest }) {
+  process.stdout.write("Creating tarball... ");
+
+  const targetBase = require('url').resolve(target,name)
+
+  return exec(`tar -czf ${dest}/${name}.tgz ${path.basename(targetBase)}`, {
+    cwd: path.dirname(targetBase)
+  })
+    .then(() => process.stdout.write("✓\n"))
+}
+
+mktemp()
+  .then(tmpDir => {
+    return pack(languagePack.artifactId, `${languagePack.artifactId}-v${languagePack.version}`, languagePackDir, tmpDir)
+      .then(() => tar({
+        target: `${tmpDir}/`,
+        name: `${languagePack.artifactId}-v${languagePack.version}`,
+        dest: outputDir
+      }))
+      .then(() => { if (!debug) cleanup([tmpDir]) })
+  })
+  .then(() => console.log("Succesfully bundled module."))
+  .catch(err => {
+    process.stdout.write("✗\n")
+    console.error(err.message);
+    if (debug) console.error(err.stack);
+
+    process.exitCode = 1;
+  })
