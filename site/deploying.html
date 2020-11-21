@@ -66,7 +66,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#language-packages" class="md-skip">
+        <a href="#deploying-to-openfnplatform-instances" class="md-skip">
           Skip to content
         </a>
       
@@ -421,25 +421,24 @@
                   </a>
                 
                 
-                <h1 id="language-packages">Language Packages<a class="headerlink" href="#language-packages" title="Permanent link">#</a></h1>
+                <h1 id="deploying-to-openfnplatform-instances">Deploying to OpenFn/platform instances<a class="headerlink" href="#deploying-to-openfnplatform-instances" title="Permanent link">#</a></h1>
 <p>Build and testing workspace for OpenFn Language Packs</p>
-<p>To get started run the <code>./scripts/bootstrap</code> script.</p>
 <h2 id="scripts">Scripts<a class="headerlink" href="#scripts" title="Permanent link">#</a></h2>
 <p>In order to run the scripts, ensure you have cd'd into the project directory
 and enter <code>./scripts/&lt;script-name&gt;</code></p>
 <h3 id="bootstrap">bootstrap<a class="headerlink" href="#bootstrap" title="Permanent link">#</a></h3>
 <p>Installs packages and prepares the working directory. This needs to be run
-  before running any of the other scripts.</p>
+before running any of the other scripts.</p>
 <h3 id="generate-doclets">generate-doclets<a class="headerlink" href="#generate-doclets" title="Permanent link">#</a></h3>
 <p>Iterates overs all language pack folder names found in the <code>repos</code> list and
-  creates a doclet json file in the <code>doclets</code> directory.</p>
+creates a doclet json file in the <code>doclets</code> directory.</p>
 <h3 id="analyse-doclets">analyse-doclets<a class="headerlink" href="#analyse-doclets" title="Permanent link">#</a></h3>
 <p>Iterates overs all doclets found in <code>doclets</code> and gives a tree view
-  of the doclet structure using <a href="https://github.com/OpenFn/jsdoc-query">jsdoc-query</a>.</p>
+of the doclet structure using <a href="https://github.com/OpenFn/jsdoc-query">jsdoc-query</a>.</p>
 <h3 id="bundle">bundle<a class="headerlink" href="#bundle" title="Permanent link">#</a></h3>
 <p>Creates a tarball with all production dependencies install for a given module.</p>
 <p>Example: <code>./scripts/bundle-node language-common -o builds</code>
-    creates a <code>language-common-v1.0.0.tgz</code> file in the 'builds' directory.</p>
+creates a <code>language-common-v1.0.0.tgz</code> file in the 'builds' directory.</p>
 <p>Arguments <code>./scripts/bundle-node &lt;language&gt; -o &lt;output folder&gt; -d</code></p>
 <ul>
 <li><code>-o</code> - Output folder</li>
@@ -447,12 +446,15 @@ and enter <code>./scripts/&lt;script-name&gt;</code></p>
 </ul>
 <h3 id="bundle-all">bundle-all<a class="headerlink" href="#bundle-all" title="Permanent link">#</a></h3>
 <p>Runs <code>bundle</code> for all repos found in the list, and outputs them to the
-  <code>builds</code> folder.</p>
+<code>builds</code> folder.</p>
 <h3 id="upload-release">upload-release<a class="headerlink" href="#upload-release" title="Permanent link">#</a></h3>
 <p>Uploads a tarball to a Github release.</p>
-<p>Example:
-  <code>GH_TOKEN=&lt;oauth-token&gt; \
-    ./scripts/upload-release -i ./builds/language-common-v0.0.0.tgz</code></p>
+<p>Example:</p>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="n">GH_TOKEN</span><span class="o">=&lt;</span><span class="n">oauth</span><span class="o">-</span><span class="n">token</span><span class="o">&gt;</span> \
+  <span class="o">./</span><span class="n">scripts</span><span class="o">/</span><span class="n">upload</span><span class="o">-</span><span class="n">release</span> <span class="o">-</span><span class="n">i</span> <span class="o">./</span><span class="n">builds</span><span class="o">/</span><span class="n">language</span><span class="o">-</span><span class="n">common</span><span class="o">-</span><span class="n">v0</span><span class="o">.</span><span class="mf">0.0</span><span class="o">.</span><span class="n">tgz</span>
+</code></pre></div>
+</td></tr></table>
 <p>Infers the repo name and version number from the file.</p>
 <p>Arguments <code>./scripts/upload-release -i &lt;file&gt; [-u]</code></p>
 <ul>
@@ -509,8 +511,12 @@ from Github.</p>
 <p>This script expects a <code>GH_TOKEN</code> env variable, which is an OAuth2 token you
    must get from Github (via the account page)</p>
 <ol>
-<li><strong>Add the version to core</strong></li>
-<li>Add your release to the <code>scripts/install-language-packs</code> script.</li>
+<li>
+<p><strong>Add the version to core</strong></p>
+</li>
+<li>
+<p>Add your release to the <code>scripts/install-language-packs</code> script.</p>
+</li>
 <li>Add the version number to <code>priv/adaptors.json</code>.</li>
 <li>Add the <code>bodySchema</code> to <code>CredentialView.js</code>.</li>
 </ol>
