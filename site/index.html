@@ -19,7 +19,7 @@
     
     
       
-        <title>Home - OpenFn/devtools</title>
+        <title>Documentation - OpenFn/devtools</title>
       
     
     
@@ -95,7 +95,7 @@
           </span>
           <span class="md-header-nav__topic md-ellipsis">
             
-              Home
+              Documentation
             
           </span>
         </div>
@@ -203,12 +203,12 @@
     
     
       <label class="md-nav__link md-nav__link--active" for="__toc">
-        Home
+        Documentation
         <span class="md-nav__icon md-icon"></span>
       </label>
     
     <a href="index.html" class="md-nav__link md-nav__link--active">
-      Home
+      Documentation
     </a>
     
       
@@ -312,7 +312,7 @@
 
   <li class="md-nav__item">
     <a href="deploying.html" class="md-nav__link">
-      Deploying
+      Extras
     </a>
   </li>
 
@@ -462,14 +462,15 @@ and developing new adaptors (language-packages).</p>
 <p>This intercepts all HTTP requests and displays the request information for
 debugging.</p>
 <h4 id="fakeadaptor"><code>.FakeAdaptor</code><a class="headerlink" href="#fakeadaptor" title="Permanent link">#</a></h4>
-<p><code>language-salesforce</code> has a built-in <code>.FakeAdaptor</code> which allows a user to test
-expressions on data without sending them to a real Salesforce server.</p>
+<p>Adaptors may provide dummy modules for testing. <code>language-salesforce</code> has a
+built-in <code>.FakeAdaptor</code> which allows a user to test expressions on data without
+sending them to a real Salesforce server.</p>
 <p>Instead of using <code>-l ./language-salesforce.Adaptor</code>,
 use <code>-l./language-salesforce.FakeAdaptor</code> to test expressions offline:
 <code>./core/lib/cli.js execute -l ./language-salesforce.FakeAdaptor -s ./tmp/state.json -o ./tmp/output.json -e ./tmp/expression.js</code></p>
 <h4 id="offline-testing-for-other-language-packages">Offline testing for other <code>language-packages</code><a class="headerlink" href="#offline-testing-for-other-language-packages" title="Permanent link">#</a></h4>
-<p>For most standard language packages, it's fairly easy to remove the HTTP post
-calls from the top-level function.</p>
+<p>For most standard language packages which make use of HTTP requests, you can add
+<code>--test</code> to the execute command to intercept all HTTP requests.</p>
 <h2 id="modifying-or-developing-new-adaptors">Modifying or developing new adaptors<a class="headerlink" href="#modifying-or-developing-new-adaptors" title="Permanent link">#</a></h2>
 <p><em>wip</em></p>
 <h3 id="pre-requisites">Pre-Requisites<a class="headerlink" href="#pre-requisites" title="Permanent link">#</a></h3>
@@ -503,7 +504,7 @@ calls from the top-level function.</p>
                 <span class="md-footer-nav__direction">
                   Next
                 </span>
-                Deploying
+                Extras
               </div>
             </div>
             <div class="md-footer-nav__button md-icon">

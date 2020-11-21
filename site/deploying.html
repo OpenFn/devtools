@@ -19,7 +19,7 @@
     
     
       
-        <title>Deploying - OpenFn/devtools</title>
+        <title>Extras - OpenFn/devtools</title>
       
     
     
@@ -66,7 +66,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#deploying-to-openfnplatform-instances" class="md-skip">
+        <a href="#extra-tools-for-adaptors" class="md-skip">
           Skip to content
         </a>
       
@@ -95,7 +95,7 @@
           </span>
           <span class="md-header-nav__topic md-ellipsis">
             
-              Deploying
+              Extras
             
           </span>
         </div>
@@ -195,7 +195,7 @@
 
   <li class="md-nav__item">
     <a href="index.html" class="md-nav__link">
-      Home
+      Documentation
     </a>
   </li>
 
@@ -215,12 +215,12 @@
     
     
       <label class="md-nav__link md-nav__link--active" for="__toc">
-        Deploying
+        Extras
         <span class="md-nav__icon md-icon"></span>
       </label>
     
     <a href="deploying.html" class="md-nav__link md-nav__link--active">
-      Deploying
+      Extras
     </a>
     
       
@@ -292,15 +292,22 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#repos-file" class="md-nav__link">
-    repos file
+  <a href="#a-repos-file-for-quick-setup" class="md-nav__link">
+    A repos file for quick setup
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#releasing-a-new-language-pack" class="md-nav__link">
-    Releasing a new Language Pack
+  <a href="#releasing-a-new-adaptor-version" class="md-nav__link">
+    Releasing a new adaptor version
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#using-a-new-adaptor-in-an-openfnplatform-instance" class="md-nav__link">
+    Using a new adaptor in an OpenFn/platform instance
   </a>
   
 </li>
@@ -391,15 +398,22 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#repos-file" class="md-nav__link">
-    repos file
+  <a href="#a-repos-file-for-quick-setup" class="md-nav__link">
+    A repos file for quick setup
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#releasing-a-new-language-pack" class="md-nav__link">
-    Releasing a new Language Pack
+  <a href="#releasing-a-new-adaptor-version" class="md-nav__link">
+    Releasing a new adaptor version
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#using-a-new-adaptor-in-an-openfnplatform-instance" class="md-nav__link">
+    Using a new adaptor in an OpenFn/platform instance
   </a>
   
 </li>
@@ -421,8 +435,7 @@
                   </a>
                 
                 
-                <h1 id="deploying-to-openfnplatform-instances">Deploying to OpenFn/platform instances<a class="headerlink" href="#deploying-to-openfnplatform-instances" title="Permanent link">#</a></h1>
-<p>Build and testing workspace for OpenFn Language Packs</p>
+                <h1 id="extra-tools-for-adaptors">Extra tools for adaptors<a class="headerlink" href="#extra-tools-for-adaptors" title="Permanent link">#</a></h1>
 <h2 id="scripts">Scripts<a class="headerlink" href="#scripts" title="Permanent link">#</a></h2>
 <p>In order to run the scripts, ensure you have cd'd into the project directory
 and enter <code>./scripts/&lt;script-name&gt;</code></p>
@@ -461,11 +474,11 @@ creates a <code>language-common-v1.0.0.tgz</code> file in the 'builds' directory
 <li><code>i</code> - Path to build file to upload</li>
 <li><code>u</code> - Update a file if already exists (and is a different size)</li>
 </ul>
-<h2 id="repos-file">repos file<a class="headerlink" href="#repos-file" title="Permanent link">#</a></h2>
+<h2 id="a-repos-file-for-quick-setup">A repos file for quick setup<a class="headerlink" href="#a-repos-file-for-quick-setup" title="Permanent link">#</a></h2>
 <p>Located in the root of the project, this file is a list of language pack
 git repo names used by the scripts in order to check out the packages
 from Github.</p>
-<h2 id="releasing-a-new-language-pack">Releasing a new Language Pack<a class="headerlink" href="#releasing-a-new-language-pack" title="Permanent link">#</a></h2>
+<h2 id="releasing-a-new-adaptor-version">Releasing a new adaptor version<a class="headerlink" href="#releasing-a-new-adaptor-version" title="Permanent link">#</a></h2>
 <ol>
 <li>
 <p><strong>Bump the version in <code>package.json</code></strong></p>
@@ -510,19 +523,12 @@ from Github.</p>
    is different.</p>
 <p>This script expects a <code>GH_TOKEN</code> env variable, which is an OAuth2 token you
    must get from Github (via the account page)</p>
+<h2 id="using-a-new-adaptor-in-an-openfnplatform-instance">Using a new adaptor in an OpenFn/platform instance<a class="headerlink" href="#using-a-new-adaptor-in-an-openfnplatform-instance" title="Permanent link">#</a></h2>
 <ol>
-<li>
-<p><strong>Add the version to core</strong></p>
-</li>
-<li>
-<p>Add your release to the <code>scripts/install-language-packs</code> script.</p>
-</li>
+<li>Add your release to the <code>scripts/install-lp</code> script.</li>
 <li>Add the version number to <code>priv/adaptors.json</code>.</li>
 <li>Add the <code>bodySchema</code> to <code>CredentialView.js</code>.</li>
 </ol>
-<p>During the application build step, the <code>install-language-packs</code> script is run
-   which downloads all the listed language packs, and symlinks the newest as a
-   default.</p>
                 
               
               
@@ -550,7 +556,7 @@ from Github.</p>
                 <span class="md-footer-nav__direction">
                   Previous
                 </span>
-                Home
+                Documentation
               </div>
             </div>
           </a>
