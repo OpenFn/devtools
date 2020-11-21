@@ -7,7 +7,7 @@ use_directory_urls: false
 
 # Repository
 repo_name: 'GitHub'
-repo_url: 'https://github.com/openfn/docs'
+repo_url: 'https://github.com/openfn/devtools'
 
 # Copyright
 copyright: 'Copyright (c) 2020 Open Function Group LLC'
