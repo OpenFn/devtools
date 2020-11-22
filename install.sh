@@ -1,41 +1,39 @@
 #!/bin/bash
 # ==============================================================================
-# Bash script to install openfn-devtools
+# Bash script to install OpenFn/devtools
 # ==============================================================================
 
-if [[ $1 ]]; then
-  # install a language-package if argument is provided
-  echo installing $1...
-  git clone https://github.com/OpenFn/$1.git
-  cd $1
-  npm install
-  cd ../
-  echo adaptor $1 installed ✓
+if [[ $1 = https ]]; then
+  clone="git clone https://github.com/OpenFn"
+elif [[ $1 = ssh ]]; then
+  clone="git clone git@github.com:OpenFn"
+fi
+
+if [[ $2 ]]; then
+  # install an adaptors if argument is provided
+  echo installing $2...
+  $clone/$2.git ./adaptors/$2|| (cd ./core ; git pull) \
+    && npm install --prefix ./adaptors/$2 \
+    && echo $2 adaptor installed ✓
 else
   # base installation
-  echo installing openfn-devtools...
-  git clone https://github.com/OpenFn/core.git
-  git clone https://github.com/OpenFn/language-common.git
-  git clone https://github.com/OpenFn/language-http.git
+  echo installing OpenFn/devtools...
   
-  cd core
-  npm install
-  echo OpenFn/core installed ✓
-  cd ../
+  $clone/core.git || (cd ./core ; git pull) \
+    && npm install --prefix ./core \
+    && echo OpenFn/core installed ✓
+
+  $clone/language-common.git ./adaptors/language-common || (cd ./core ; git pull) \
+    && npm install --prefix ./adaptors/language-common \
+    && echo language-common adaptor installed ✓
   
-  cd language-common
-  npm install
-  echo common adaptor installed ✓
-  cd ../
+  $clone/language-http.git ./adaptors/language-http || (cd ./core ; git pull) \
+    && npm install --prefix ./adaptors/language-common \
+    && echo language-http adaptor installed ✓  
   
-  cd language-http
-  echo http adaptor installed ✓
-  npm install
-  cd ../
-  
-  mkdir tmp
+  mkdir -p tmp
   cp tmp.example/expression.js tmp
   cp tmp.example/state.json tmp
   
-  echo openfn-devtools installed ✓
+  echo OpenFn/devtools installed ✓
 fi

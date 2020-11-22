@@ -1,7 +1,6 @@
-adaptor/
-builds
-core/
-language-*
 node_modules
-shunit*
+builds/
+core/
+adaptors/
 tmp/
+shunit*
