@@ -5,6 +5,11 @@ do
   if [[ ! -d "$repo" ]]; then
     echo "Cloning $repo..."
     git clone --depth=1 "git@github.com:OpenFn/$repo.git" ./adaptors/$repo
+    if [[ $1 = "npm-install" ]]; then
+      npm install --prefix ./adaptors/$repo
+    else
+      echo "Skipping npm install for $repo"
+    fi
   fi
 
   if [[ ! -f "./adaptors/$repo/.git/hooks/post-commit" ]]; then

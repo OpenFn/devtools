@@ -1,6 +1,6 @@
 {
   "name": "@openfn/devtools",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "author": "Open Function Group",
   "license": "LGPL-3.0",
   "dependencies": {

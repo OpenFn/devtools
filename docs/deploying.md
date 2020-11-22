@@ -2,7 +2,14 @@
 
 The scripts here aid in setting up a development environment for adaptor work,
 and include commands to quickly clone a large number of adaptors, create
-tarballs of adaptors with only production dependencies included,
+tarballs of adaptors with only production dependencies included, etc.
+
+For the kitchen sink, run:
+
+```sh
+./install ssh
+./scripts/bootstrap npm-install
+```
 
 ## Scripts
 
@@ -11,8 +18,12 @@ and enter `./scripts/<script-name>`
 
 ### bootstrap
 
-Installs packages and prepares the working directory. This needs to be run
-before running any of the other scripts
+Installs all adaptors in `repos` file to the `/adaptors` directory and prepares
+the working directory. This needs to be run before running any of the other
+scripts. Pass `npm-install` to run npm install for each adaptor also.
+
+`./scripts/bootstrap npm-install` - to clone, set up hooks and npm install in each
+`./scripts/bootstrap`- to clone and set up hooks in each
 
 ### generate-doclets
 
