@@ -292,15 +292,8 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#a-repos-file-for-quick-setup" class="md-nav__link">
-    A repos file for quick setup
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#releasing-a-new-adaptor-version" class="md-nav__link">
-    Releasing a new adaptor version
+  <a href="#releasing-a-new-adaptor-version-for-production-use" class="md-nav__link">
+    Releasing a new adaptor version for production use
   </a>
   
 </li>
@@ -398,15 +391,8 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#a-repos-file-for-quick-setup" class="md-nav__link">
-    A repos file for quick setup
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#releasing-a-new-adaptor-version" class="md-nav__link">
-    Releasing a new adaptor version
+  <a href="#releasing-a-new-adaptor-version-for-production-use" class="md-nav__link">
+    Releasing a new adaptor version for production use
   </a>
   
 </li>
@@ -436,12 +422,24 @@
                 
                 
                 <h1 id="extra-tools-for-adaptors">Extra tools for adaptors<a class="headerlink" href="#extra-tools-for-adaptors" title="Permanent link">#</a></h1>
+<p>The scripts here aid in setting up a development environment for adaptor work,
+and include commands to quickly clone a large number of adaptors, create
+tarballs of adaptors with only production dependencies included, etc.</p>
+<p>For the kitchen sink, run:</p>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code>./install ssh
+./scripts/bootstrap npm-install
+</code></pre></div>
+</td></tr></table>
 <h2 id="scripts">Scripts<a class="headerlink" href="#scripts" title="Permanent link">#</a></h2>
 <p>In order to run the scripts, ensure you have cd'd into the project directory
 and enter <code>./scripts/&lt;script-name&gt;</code></p>
 <h3 id="bootstrap">bootstrap<a class="headerlink" href="#bootstrap" title="Permanent link">#</a></h3>
-<p>Installs packages and prepares the working directory. This needs to be run
-before running any of the other scripts.</p>
+<p>Installs all adaptors in <code>repos</code> file to the <code>/adaptors</code> directory and prepares
+the working directory. This needs to be run before running any of the other
+scripts. Pass <code>npm-install</code> to run npm install for each adaptor also.</p>
+<p><code>./scripts/bootstrap npm-install</code> - to clone, set up hooks and npm install in each
+<code>./scripts/bootstrap</code>- to clone and set up hooks in each</p>
 <h3 id="generate-doclets">generate-doclets<a class="headerlink" href="#generate-doclets" title="Permanent link">#</a></h3>
 <p>Iterates overs all language pack folder names found in the <code>repos</code> list and
 creates a doclet json file in the <code>doclets</code> directory.</p>
@@ -474,55 +472,28 @@ creates a <code>language-common-v1.0.0.tgz</code> file in the 'builds' directory
 <li><code>i</code> - Path to build file to upload</li>
 <li><code>u</code> - Update a file if already exists (and is a different size)</li>
 </ul>
-<h2 id="a-repos-file-for-quick-setup">A repos file for quick setup<a class="headerlink" href="#a-repos-file-for-quick-setup" title="Permanent link">#</a></h2>
-<p>Located in the root of the project, this file is a list of language pack
-git repo names used by the scripts in order to check out the packages
-from Github.</p>
-<h2 id="releasing-a-new-adaptor-version">Releasing a new adaptor version<a class="headerlink" href="#releasing-a-new-adaptor-version" title="Permanent link">#</a></h2>
+<h2 id="releasing-a-new-adaptor-version-for-production-use">Releasing a new adaptor version for production use<a class="headerlink" href="#releasing-a-new-adaptor-version-for-production-use" title="Permanent link">#</a></h2>
 <ol>
-<li>
-<p><strong>Bump the version in <code>package.json</code></strong></p>
-</li>
-<li>
-<p><strong>Commit</strong>
-   Ensure there is a tag for the version. (<code>git tag</code>)
-   <em>This is handled with a git hook provided by <code>bootstrap</code></em></p>
-</li>
-<li>
-<p><strong>Push the commits and tag to GitHub</strong>
-   <code>git push &amp;&amp; git push --tags</code></p>
-</li>
-<li>
-<p><strong>Create a release</strong>
-   Go to the associated repo on Github, click 'Releases' and then
-   'Draft a new release'.
-   Select the version tag that was pushed in the last step.
-   Write a title and release notes as needed.</p>
-</li>
+<li><strong>Bump the version in <code>package.json</code></strong></li>
+<li><strong>Run <code>npm install</code></strong> to update <code>package-lock.json</code></li>
+<li><strong>Commit</strong> and tag your version with <code>git tag</code>.
+   <em>N.B., this is handled with a git hook provided by <code>bootstrap</code></em></li>
+<li><strong>Push the commits and tag to GitHub</strong> with <code>git push &amp;&amp; git push --tags</code></li>
+<li><strong>Create a release</strong> on the the associated repo on Github, selecting the
+   version tag that was pushed in the last step. Write a title and release notes
+   as needed then click 'Publish release'.</li>
+<li><strong>Return to the devtools directory</strong> with <code>cd ../</code></li>
+<li><strong>Bundle the module</strong> with <code>./scripts/bundle-node &lt;language-pack&gt; -o builds</code></li>
+<li><strong>Verify that the tarball was created</strong> in <code>builds</code> with the naming
+   convention of: <code>&lt;language-pack&gt;-&lt;version&gt;.tgz</code></li>
+<li><strong>Upload the build</strong> using the <code>upload-release</code> script:
+   <code>./scripts/upload-release -i builds/&lt;file&gt;</code></li>
 </ol>
-<p>Click 'Publish release'.</p>
-<ol>
-<li>
-<p><strong>Return to the language-packages directory</strong>
-   <code>cd ../</code> to return to the language-packages directory.</p>
-</li>
-<li>
-<p><strong>Bundle the module</strong>
-   <code>./scripts/bundle-node &lt;language-pack&gt; -o builds</code> or <code>./scripts/bundle-java &lt;language-pack&gt; -o builds</code></p>
-</li>
-</ol>
-<p>Verify that there is a file in <code>builds</code> with the naming convention of:
-   <code>&lt;language-pack&gt;-&lt;version&gt;.tgz</code></p>
-<ol>
-<li><strong>Upload the build</strong>
-   Using the <code>upload-release</code> script:</li>
-</ol>
-<p><code>./scripts/upload-release -i builds/&lt;file&gt;</code></p>
-<p>If the wrong file was uploaded or you want to replace the build on Github
-   then use the <code>-u</code> flag which deletes the build from Github if the filesize
-   is different.</p>
-<p>This script expects a <code>GH_TOKEN</code> env variable, which is an OAuth2 token you
-   must get from Github (via the account page)</p>
+<p>If the wrong file was uploaded or you want to replace the build on Github then
+use the <code>-u</code> flag which deletes the build from Github if the filesize is
+different.</p>
+<p>Note that this script expects a <code>GH_TOKEN</code> env variable, which is an OAuth2
+token you must get from Github (via the account page)</p>
 <h2 id="using-a-new-adaptor-in-an-openfnplatform-instance">Using a new adaptor in an OpenFn/platform instance<a class="headerlink" href="#using-a-new-adaptor-in-an-openfnplatform-instance" title="Permanent link">#</a></h2>
 <ol>
 <li>Add your release to the <code>scripts/install-lp</code> script.</li>

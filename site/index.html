@@ -436,15 +436,18 @@
 and developing new adaptors (language-packages).</p>
 <h2 id="up-and-running">Up and running<a class="headerlink" href="#up-and-running" title="Permanent link">#</a></h2>
 <ol>
-<li>Make sure you've got <a href="https://git-scm.com/downloads">git</a> (maybe GitBash for Windows?)</li>
+<li>Make sure you've got <a href="https://git-scm.com/downloads">git</a> (maybe GitBash for
+   Windows?)</li>
 <li>And <a href="https://nodejs.org/en/download/">Node.js</a> (version 6.11 or greater)</li>
-<li>Run <code>git clone git@github.com:OpenFn/devtools.git</code> for SSH or <code>git clone https://github.com/OpenFn/devtools.git</code></li>
+<li>Run <code>git clone git@github.com:OpenFn/devtools.git</code> for SSH or
+   <code>git clone https://github.com/OpenFn/devtools.git</code></li>
 <li>Run <code>cd devtools</code></li>
-<li>Run <code>./install.sh</code> to install core, language-common, and language-http</li>
+<li>Run <code>./install.sh ssh</code> or <code>./install.sh https</code> to install core,
+   language-common, and language-http</li>
 </ol>
 <p><em>Note: If you get a "permission denied" message when running <code>./install.sh</code>, try
 <code>run chmod +x ./install.sh</code> then retry the install command.</em></p>
-<p>To install specific adaptors, run <code>./install.sh language-${name}</code></p>
+<p>To install specific adaptors, run <code>./install.sh ${ssh || https} language-${name}</code></p>
 <p>You can run core from anywhere by using <code>npm install -g</code> for global install
 <code>npm install -g github:openfn/core#master</code></p>
 <h2 id="usage">Usage<a class="headerlink" href="#usage" title="Permanent link">#</a></h2>
