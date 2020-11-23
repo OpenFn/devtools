@@ -5,4 +5,5 @@ core/
 adaptors/
 projects/
 tmp/
+site/
 shunit*
