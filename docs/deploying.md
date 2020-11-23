@@ -80,8 +80,8 @@ Arguments `./scripts/upload-release -i <file> [-u]`
 5. **Create a release** on the the associated repo on Github, selecting the
    version tag that was pushed in the last step. Write a title and release notes
    as needed then click 'Publish release'.
-6. **Return to the devtools directory** with `cd ../`
-7. **Bundle the module** with `./scripts/bundle-node <language-pack> -o builds`
+6. **Return to the devtools directory** with `cd ../../`
+7. **Bundle the module** with `./scripts/bundle-node ./adaptors/<language-pack> -o builds`
 8. **Verify that the tarball was created** in `builds` with the naming
    convention of: `<language-pack>-<version>.tgz`
 9. **Upload the build** using the `upload-release` script:
