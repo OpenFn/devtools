@@ -20,7 +20,8 @@ extra_javascript: [freshChat.js]
 # Documentation and theme
 docs_dir: 'docs'
 theme:
-  logo: images/logo.svg
+  # logo: images/logo.svg
+  logo: images/new_round_concept.png
   icon:
     # logo: material/cloud
     repo: fontawesome/brands/github-alt
@@ -29,7 +30,9 @@ theme:
     - tabs
     - instant
   palette:
-    scheme: default
+    scheme: slate
+    primary: white
+    accent: light blue
   font:
     text: 'Roboto'
     code: 'Roboto Mono'
