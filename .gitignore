@@ -4,6 +4,7 @@ doclets/
 core/
 adaptors/
 projects/
+clients/
 tmp/
 site/
 shunit*
