@@ -24,7 +24,7 @@
 let argv, GitHubApi;
 try {
   argv = require('minimist')(process.argv.slice(2));
-  GitHubApi = require('github');
+  GitHubApi = require('@octokit/rest');
 } catch (e) {
   console.log(e.message);
   console.log("Ensure all dependencies have been installed via: `npm install`");
