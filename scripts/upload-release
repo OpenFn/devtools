@@ -136,10 +136,9 @@ function uploadUnlessExists(file) {
             repo,
             name: 'build.tgz',
             release_id: release.data.id,
-            data: file,
+            data: fs.readFileSync(file),
           })
           .then((response) => {
-            console.log(response);
             console.log(
               `✓ Build uploaded as release asset: ${response.data.browser_download_url}`
             );
