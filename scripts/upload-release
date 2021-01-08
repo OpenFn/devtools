@@ -20,48 +20,54 @@
 // * `1` - Unexpected Error
 // * `2` - Already Exists
 
-
 let argv, GitHubApi;
 try {
   argv = require('minimist')(process.argv.slice(2));
-  GitHubApi = require('@octokit/rest');
+  const { Octokit } = require('@octokit/rest');
+  GitHubApi = Octokit;
 } catch (e) {
   console.log(e.message);
-  console.log("Ensure all dependencies have been installed via: `npm install`");
+  console.log('Ensure all dependencies have been installed via: `npm install`');
   process.exit(1);
 }
 
 const fs = require('fs');
-let user = "OpenFn", file, repo, debug, updateExisting, github, token;
+let owner = 'OpenFn',
+  file,
+  repo,
+  debug,
+  updateExisting,
+  github,
+  token;
 
 try {
-  file = argv.i
+  file = argv.i;
   debug = argv.d || false;
   updateExisting = argv.u || false;
 
-  if (!(token = process.env["GH_TOKEN"])) {
-    throw new Error("Github OAuth token not found, please set via GH_TOKEN=...")
+  if (!(token = process.env['GH_TOKEN'])) {
+    throw new Error(
+      'Github OAuth token not found, please set via GH_TOKEN=...'
+    );
   }
-  if (!file) throw new Error("Please specify file with -i <filename>.");
+  if (!file) throw new Error('Please specify file with -i <filename>.');
 
-  const tag = "v" + file.match(/(\d+\.\d+\.\d+)\.tgz$/)[1]
-  repo = file.match(/\/([\w-]+)-v[\d\.]+\.tgz$/)[1]
+  const tag = 'v' + file.match(/(\d+\.\d+\.\d+)\.tgz$/)[1];
+  repo = file.match(/\/([\w-]+)-v[\d\.]+\.tgz$/)[1];
 
-  github = new GitHubApi();
-  github.authenticate({ type: "oauth", token });
+  github = new GitHubApi({ auth: token });
 
   findBuildFor(tag)
     .then(uploadUnlessExists(file))
-    .catch(e => {
-      logError(e)
+    .catch((e) => {
+      logError(e);
 
       if (e instanceof AlreadyExists) {
         process.exitCode = 2;
       } else {
         process.exitCode = 1;
       }
-    })
-
+    });
 } catch (e) {
   console.log(e.message);
   process.exit(1);
@@ -70,7 +76,7 @@ try {
 function AlreadyExists(message) {
   this.name = 'AlreadyExists';
   this.message = message;
-  this.stack = (new Error()).stack;
+  this.stack = new Error().stack;
 }
 
 function logError(e) {
@@ -83,56 +89,67 @@ function logError(e) {
   return e;
 }
 
-// Generic Promise wrapper for GitHubApi functions.
-function wrap(func) {
-  return (opts) => {
-    return new Promise((resolve, reject) => {
-      func(opts, (err, res) => {
-        if (err) return reject(err);
-        return resolve(res);
-      })
-    });
-  }
-}
-
 function findBuildFor(tag) {
-  return wrap(github.repos.getReleaseByTag)({ user, repo, tag })
-    .catch(e => {
-      if (e.code == 404) {
-        return Promise.reject(new Error(`${tag} does not exist for repo: ${repo}`))
-      }
-      return Promise.reject(e)
-    })
+  return github.repos.getReleaseByTag({ owner, repo, tag }).catch((e) => {
+    if (e.code == 404) {
+      return Promise.reject(
+        new Error(`${tag} does not exist for repo: ${repo}`)
+      );
+    }
+    return Promise.reject(e);
+  });
 }
 
 function uploadUnlessExists(file) {
-  return release => {
-    const existing = release.assets.filter(a => a.name == 'build.tgz')[0]
+  return (release) => {
+    const existing = release.data.assets.filter(
+      (a) => a.name == 'build.tgz'
+    )[0];
 
     if (existing) {
       const localSize = fs.statSync(file).size;
       if (localSize == existing.size) {
-        throw new AlreadyExists("Build already exists.")
+        throw new AlreadyExists('Build already exists.');
       } else {
         if (!updateExisting) {
-          throw new AlreadyExists("Build exists but is a different size. Use -u option to update existing files.")
+          throw new AlreadyExists(
+            'Build exists but is a different size. Use -u option to update existing files.'
+          );
         }
       }
     }
 
     return Promise.resolve(existing && updateExisting)
-      .then(mustDelete => {
-        if (mustDelete) return wrap(github.repos.deleteAsset)({ user, repo, id: existing.id })
+      .then((mustDelete) => {
+        if (mustDelete)
+          return github.repos.deleteReleaseAsset({
+            owner,
+            repo,
+            asset_id: existing.id,
+          });
       })
       .then(() => {
-        return wrap(github.repos.uploadAsset)({ user, repo,
-          name: 'build.tgz', filePath: file, id: release.id
-        }).catch(err => {
-          if (err.code == 'ENOENT') {
-            return Promise.reject(err)
-          }
-          return Promise.reject(new Error("Upload Failed."))
-        })
-      })
-  }
+        console.log('Uploading release asset.');
+        return github.repos
+          .uploadReleaseAsset({
+            owner,
+            repo,
+            name: 'build.tgz',
+            release_id: release.data.id,
+            data: file,
+          })
+          .then((response) => {
+            console.log(response);
+            console.log(
+              `✓ Build uploaded as release asset: ${response.data.browser_download_url}`
+            );
+          })
+          .catch((err) => {
+            if (err.status == 'ENOENT') {
+              return Promise.reject(err);
+            }
+            return Promise.reject(new Error('Upload Failed.'));
+          });
+      });
+  };
 }
