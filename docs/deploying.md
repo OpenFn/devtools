@@ -46,6 +46,7 @@ Arguments `./scripts/bundle-node <language> -o <output folder> -d`
 
 - `-o` - Output folder
 - `-d` - Debug
+- `--no-ast` - Don't build an include an AST for OpenFn.org to parse
 
 ### bundle-all
 
