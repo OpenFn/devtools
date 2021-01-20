@@ -147,6 +147,7 @@ function uploadUnlessExists(file) {
             if (err.status == 'ENOENT') {
               return Promise.reject(err);
             }
+            console.log(err);
             return Promise.reject(new Error('Upload Failed.'));
           });
       });
