@@ -161,7 +161,7 @@ mktemp()
         if (!debug) cleanup([tmpDir]);
       });
   })
-  .then(() => console.log('Succesfully bundled module.'))
+  .then(() => console.log('Successfully bundled module.'))
   .catch((err) => {
     process.stdout.write('✗\n');
     console.error(err.message);
