@@ -1,7 +1,12 @@
 {
   "name": "@openfn/devtools",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "author": "Open Function Group",
+  "homepage": "https://docs.openfn.org",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/openfn/devtools.git"
+  },
   "license": "LGPL-3.0",
   "dependencies": {
     "@octokit/rest": "^18.0.12",

@@ -34,6 +34,11 @@ try {
   process.exit(1);
 }
 
+// removes '@openfn/' from the start of builds if they're NPM namespaced
+function adaptorName(fullName) {
+  return fullName.replace('@openfn/', '');
+}
+
 // Generic Promise wrapper for child_process.exec.
 function exec(cmd, opts = {}) {
   return new Promise(function (resolve, reject) {
@@ -114,6 +119,7 @@ function cleanup(paths) {
 
 // Creates a version suffixed tarball of a target module.
 function tar({ target, name, dest }) {
+  name = adaptorName(name);
   process.stdout.write('Creating tarball... ');
 
   const targetBase = require('url').resolve(target, name);
