@@ -17,10 +17,11 @@ and developing new adaptors (language-packages).
 _Note: If you get a "permission denied" message when running `./install.sh`, try
 `run chmod +x ./install.sh ` then retry the install command._
 
-To install specific adaptors, run `./install.sh ${ssh || https} language-${name}`
+To install specific adaptors, run
+`./install.sh ${ssh || https} language-${name}`
 
-You can run core from anywhere by using `npm install -g` for global install
-`npm install -g github:openfn/core#master`
+You can run core from anywhere by using `npm install -g @openfn/core` for a
+global install.
 
 ## Usage
 
@@ -28,16 +29,17 @@ Execute takes:
 
 1. `-l [language-package].Adaptor`: The adaptor being used
 2. `-e [expression.js]:` The expression being tested
-3. `-s [state.json]`: The message `data: {...}` and credential `configuration: {...}`
+3. `-s [state.json]`: The message `data: {...}` and credential
+   `configuration: {...}`
 4. `-o [output.json]`: The file to which the output will be written
 
 ### Bash usage
 
-`./core/lib/cli.js execute -l ./language-[XXX].Adaptor -s ./tmp/state.json -o ./tmp/output.json -e ./tmp/expression.js`
+`./core/bin/core execute execute -l ./language-[XXX].Adaptor -s ./tmp/state.json -o ./tmp/output.json -e ./tmp/expression.js`
 
 ### The `--test` option
 
-`./core/lib/cli.js execute -l ./language-[XXX].Adaptor -s ./tmp/state.json -o ./tmp/output.json -e ./tmp/expression.js --test`
+`./core/bin/core execute -l ./language-[XXX].Adaptor -s ./tmp/state.json -o ./tmp/output.json -e ./tmp/expression.js --test`
 
 This intercepts all HTTP requests and displays the request information for
 debugging.
@@ -48,9 +50,9 @@ Adaptors may provide dummy modules for testing. `language-salesforce` has a
 built-in `.FakeAdaptor` which allows a user to test expressions on data without
 sending them to a real Salesforce server.
 
-Instead of using `-l ./language-salesforce.Adaptor`,
-use `-l./language-salesforce.FakeAdaptor` to test expressions offline:
-`./core/lib/cli.js execute -l ./language-salesforce.FakeAdaptor -s ./tmp/state.json -o ./tmp/output.json -e ./tmp/expression.js`
+Instead of using `-l ./language-salesforce.Adaptor`, use
+`-l./language-salesforce.FakeAdaptor` to test expressions offline:
+`./core/bin/core execute -l ./language-salesforce.FakeAdaptor -s ./tmp/state.json -o ./tmp/output.json -e ./tmp/expression.js`
 
 #### Offline testing for other `language-packages`
 
