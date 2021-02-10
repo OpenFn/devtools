@@ -1,6 +1,6 @@
 {
   "name": "@openfn/devtools",
-  "version": "2.0.3",
+  "version": "2.0.4",
   "author": "Open Function Group",
   "homepage": "https://docs.openfn.org",
   "repository": {
@@ -10,7 +10,7 @@
   "license": "LGPL-3.0",
   "dependencies": {
     "@octokit/rest": "^18.0.12",
-    "@openfn/simple-ast": "0.2.4",
+    "@openfn/simple-ast": "0.2.5",
     "doclet-query": "github:openfn/jsdoc-query#master",
     "fs": "0.0.1-security",
     "jsdoc-api": "1.1.0",
