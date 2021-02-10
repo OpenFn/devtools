@@ -100,7 +100,7 @@ function installDeps(path) {
 function buildAST(packPath, destDir) {
   process.stdout.write('Building OpenFn AST... \n');
   return exec(
-    `node ./node_modules/simple-ast/lib/generate.js --adaptor ${packPath}/lib/Adaptor.js --output ${destDir}/ast.json`
+    `node ./node_modules/@openfn/simple-ast/lib/generate.js --adaptor ${packPath}/lib/Adaptor.js --output ${destDir}/ast.json`
   ).then((stdout) => {
     console.log(stdout.trim());
     process.stdout.write('✓\n');
