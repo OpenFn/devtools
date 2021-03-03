@@ -11,10 +11,20 @@ prompt.colors = false;
 prompt.message = '';
 
 console.log(
-  'Welcome to the project spec generator. This wizard will help you generate project.yaml files for use with OpenFn platform and microservices.'
+  'Welcome to the project spec generator.',
+  'This wizard will help you generate a project.yaml file',
+  `for use with ${colors.blue('OpenFn/platform')} and ${colors.blue(
+    'OpenFn/microservice'
+  )}.`
 );
 
-let destination_path = '';
+const another = thing => ({
+  another: {
+    description: colors.blue(`Would you like to add another ${thing}? (y/n)`),
+    type: 'string',
+    message: 'please enter "y" or "n"',
+  },
+});
 
 const jobForm = {
   properties: {
@@ -23,13 +33,21 @@ const jobForm = {
       type: 'string',
       required: true,
     },
-    trigger: {
-      description: colors.magenta('Trigger'),
+    expression: {
+      description: colors.magenta(
+        'Path to the job (probably a job.js file) or the expression itself'
+      ),
       type: 'string',
       required: true,
     },
     adaptor: {
       description: colors.magenta('Adaptor'),
+      default: '@openfn/language-http',
+      type: 'string',
+      required: true,
+    },
+    trigger: {
+      description: colors.magenta('Trigger'),
       type: 'string',
       required: true,
     },
@@ -38,18 +56,7 @@ const jobForm = {
       type: 'string',
       required: true,
     },
-    expression: {
-      description: colors.magenta(
-        'Path to expression (probably a job.js file)'
-      ),
-      type: 'string',
-      required: true,
-    },
-    another: {
-      description: colors.red('Would you like to add another job? (y/n)'),
-      type: 'string',
-      message: 'please enter "y" or "n"',
-    },
+    ...another('job'),
   },
 };
 
@@ -60,16 +67,37 @@ const triggerForm = {
       type: 'string',
       required: true,
     },
+    type: {
+      description: colors.magenta(
+        'Trigger type (cron | message | success | failure)'
+      ),
+      conform: value =>
+        ['cron', 'message', 'success', 'failure'].includes(value),
+      type: 'string',
+      required: true,
+      message: 'please enter "cron", "message", "success", or "failure"',
+    },
     cron: {
       description: colors.magenta('Trigger cron'),
       type: 'string',
-      required: true,
+      ask: () => prompt.history('type').value === 'cron',
     },
-    another: {
-      description: colors.red('Would you like to add another trigger? (y/n)'),
+    criteria: {
+      description: colors.magenta('Message criteria'),
       type: 'string',
-      message: 'please enter "y" or "n"',
+      ask: () => prompt.history('type').value === 'message',
     },
+    success: {
+      description: colors.magenta('Triggering job (on success)'),
+      type: 'string',
+      ask: () => prompt.history('type').value === 'success',
+    },
+    failure: {
+      description: colors.magenta('Triggering job (on failure)'),
+      type: 'string',
+      ask: () => prompt.history('type').value === 'failure',
+    },
+    ...another('trigger'),
   },
 };
 
@@ -85,17 +113,19 @@ const credentialForm = {
       type: 'string',
       required: true,
     },
-    another: {
-      description: colors.red(
-        'Would you like to add another credential? (y/n)'
-      ),
-      type: 'string',
-      message: 'please enter "y" or "n"',
-    },
+    ...another('credential'),
   },
 };
 
-prompt.start();
+const removeFalsy = obj => {
+  let newObj = {};
+  Object.keys(obj).forEach(prop => {
+    if (obj[prop]) {
+      newObj[prop] = obj[prop];
+    }
+  });
+  return newObj;
+};
 
 async function setDest() {
   const { dest } = await prompt.get([
@@ -103,6 +133,7 @@ async function setDest() {
       name: 'dest',
       required: true,
       description: colors.red('Where do you want to save the generated yaml?'),
+      default: './tmp/project.yaml',
     },
   ]);
 
@@ -122,7 +153,7 @@ async function addJob() {
 
 async function addTrigger() {
   const { name, another, ...rest } = await prompt.get(triggerForm);
-  triggers[name] = { ...rest };
+  triggers[name] = { ...removeFalsy(rest) };
 
   if (another === 'y') {
     return addTrigger();
@@ -132,27 +163,33 @@ async function addTrigger() {
 }
 
 async function addCredential() {
-  const { name, another, ...rest } = await prompt.get(credentialForm);
-  credentials[name] = { ...rest };
+  const { name, another, body } = await prompt.get(credentialForm);
+  credentials[name] = body;
 
   if (another === 'y') return addCredential();
   console.log('OK. Credentials written.');
 }
 
+let destination_path = '';
 let jobs = {};
 let triggers = {};
 let credentials = {};
 let outputPath = '';
 
+prompt.start();
+
 setDest()
   .then(dest => {
     outputPath = dest;
+    console.log("Let's add your first job.");
     return addJob();
   })
   .then(() => {
+    console.log("Let's add some triggers.");
     return addTrigger();
   })
   .then(() => {
+    console.log("Let's add some credentials.");
     return addCredential();
   })
   .then(() => {
