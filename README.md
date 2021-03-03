@@ -20,9 +20,10 @@ and developing new adaptors.
 _Note: If you get a "permission denied" message when running `./install.sh`, try
 `run chmod +x ./install.sh ` then retry the install command._
 
-To install specific adaptors, run `./install.sh ${ssh || https} language-${name}`
+To install specific adaptors, run
+`./install.sh ${ssh || https} language-${name}`
 
 You can run core from anywhere by using `npm install -g` for global install
-`npm install -g github:openfn/core#master`
+`npm install -g github:openfn/core#main`
 
 **Now go read the [docs](https://openfn.github.io/devtools/)**
