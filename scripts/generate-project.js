@@ -13,14 +13,14 @@ prompt.message = '';
 console.log(
   'Welcome to the project spec generator.',
   'This wizard will help you generate a project.yaml file',
-  `for use with ${colors.blue('OpenFn/platform')} and ${colors.blue(
+  `for use with ${colors.cyan('OpenFn/platform')} and ${colors.cyan(
     'OpenFn/microservice'
   )}.`
 );
 
 const another = thing => ({
   another: {
-    description: colors.blue(`Would you like to add another ${thing}? (y/n)`),
+    description: colors.cyan(`Would you like to add another ${thing}? (y/n)`),
     type: 'string',
     message: 'please enter "y" or "n"',
   },
@@ -29,30 +29,30 @@ const another = thing => ({
 const jobForm = {
   properties: {
     name: {
-      description: colors.magenta('Job name'),
+      description: colors.cyan('Job name'),
       type: 'string',
       required: true,
     },
     expression: {
-      description: colors.magenta(
+      description: colors.cyan(
         'Path to the job (probably a job.js file) or the expression itself'
       ),
       type: 'string',
       required: true,
     },
     adaptor: {
-      description: colors.magenta('Adaptor'),
+      description: colors.cyan('Adaptor'),
       default: '@openfn/language-http',
       type: 'string',
       required: true,
     },
     trigger: {
-      description: colors.magenta('Trigger'),
+      description: colors.cyan('Trigger'),
       type: 'string',
       required: true,
     },
     credential: {
-      description: colors.magenta('Credential'),
+      description: colors.cyan('Credential'),
       type: 'string',
       required: true,
     },
@@ -63,12 +63,12 @@ const jobForm = {
 const triggerForm = {
   properties: {
     name: {
-      description: colors.magenta('Trigger name'),
+      description: colors.cyan('Trigger name'),
       type: 'string',
       required: true,
     },
     type: {
-      description: colors.magenta(
+      description: colors.cyan(
         'Trigger type (cron | message | success | failure)'
       ),
       conform: value =>
@@ -78,22 +78,22 @@ const triggerForm = {
       message: 'please enter "cron", "message", "success", or "failure"',
     },
     cron: {
-      description: colors.magenta('Trigger cron'),
+      description: colors.cyan('Trigger cron'),
       type: 'string',
       ask: () => prompt.history('type').value === 'cron',
     },
     criteria: {
-      description: colors.magenta('Message criteria'),
+      description: colors.cyan('Message criteria'),
       type: 'string',
       ask: () => prompt.history('type').value === 'message',
     },
     success: {
-      description: colors.magenta('Triggering job (on success)'),
+      description: colors.cyan('Triggering job (on success)'),
       type: 'string',
       ask: () => prompt.history('type').value === 'success',
     },
     failure: {
-      description: colors.magenta('Triggering job (on failure)'),
+      description: colors.cyan('Triggering job (on failure)'),
       type: 'string',
       ask: () => prompt.history('type').value === 'failure',
     },
@@ -104,12 +104,12 @@ const triggerForm = {
 const credentialForm = {
   properties: {
     name: {
-      description: colors.magenta('Credential name'),
+      description: colors.cyan('Credential name'),
       type: 'string',
       required: true,
     },
     body: {
-      description: colors.magenta('Path to credential.json'),
+      description: colors.cyan('Path to credential.json'),
       type: 'string',
       required: true,
     },
@@ -132,7 +132,7 @@ async function setDest() {
     {
       name: 'dest',
       required: true,
-      description: colors.red('Where do you want to save the generated yaml?'),
+      description: colors.cyan('Where do you want to save the generated yaml?'),
       default: './tmp/project.yaml',
     },
   ]);
@@ -194,8 +194,11 @@ setDest()
   })
   .then(() => {
     const data = yaml.dump({ jobs, triggers, credentials });
-    console.log('wrote yaml:\n', data);
+    console.log('Project yaml configuration complete:');
+    console.log(data);
+    console.log(`Writing to ${outputPath}`);
     fs.writeFileSync(outputPath, data);
+    console.log(`Done.`);
   })
   .catch(err => {
     console.log('\n', "That didn't work. Error:", err.message);
