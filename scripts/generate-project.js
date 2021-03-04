@@ -13,46 +13,50 @@ prompt.message = '';
 console.log(
   'Welcome to the project spec generator.',
   'This wizard will help you generate a project.yaml file',
-  `for use with ${colors.cyan('OpenFn/platform')} and ${colors.cyan(
+  `for use with ${colors.brightCyan('OpenFn/platform')} and ${colors.brightCyan(
     'OpenFn/microservice'
   )}.`
 );
 
 const another = thing => ({
   another: {
-    description: colors.cyan(`Would you like to add another ${thing}? (y/n)`),
+    description: colors.brightCyan(`Would you like to add another ${thing}? (y/n)`),
     type: 'string',
     message: 'please enter "y" or "n"',
   },
 });
 
+const duplicateCheck = (val, obj) => !Object.keys(obj).includes(val);
+
 const jobForm = {
   properties: {
     name: {
-      description: colors.cyan('Job name'),
+      description: colors.brightCyan('Job name'),
       type: 'string',
       required: true,
+      conform: value => duplicateCheck(value, jobs),
+      message: 'job names must be unique',
     },
     expression: {
-      description: colors.cyan(
+      description: colors.brightCyan(
         'Path to the job (probably a job.js file) or the expression itself'
       ),
       type: 'string',
       required: true,
     },
     adaptor: {
-      description: colors.cyan('Adaptor'),
+      description: colors.brightCyan('Adaptor'),
       default: '@openfn/language-http',
       type: 'string',
       required: true,
     },
     trigger: {
-      description: colors.cyan('Trigger'),
+      description: colors.brightCyan('Trigger'),
       type: 'string',
       required: true,
     },
     credential: {
-      description: colors.cyan('Credential'),
+      description: colors.brightCyan('Credential'),
       type: 'string',
       required: true,
     },
@@ -63,12 +67,14 @@ const jobForm = {
 const triggerForm = {
   properties: {
     name: {
-      description: colors.cyan('Trigger name'),
+      description: colors.brightCyan('Trigger name'),
       type: 'string',
       required: true,
+      conform: value => duplicateCheck(value, triggers),
+      message: 'trigger names must be unique',
     },
     type: {
-      description: colors.cyan(
+      description: colors.brightCyan(
         'Trigger type (cron | message | success | failure)'
       ),
       conform: value =>
@@ -78,22 +84,22 @@ const triggerForm = {
       message: 'please enter "cron", "message", "success", or "failure"',
     },
     cron: {
-      description: colors.cyan('Trigger cron'),
+      description: colors.brightCyan('Trigger cron'),
       type: 'string',
       ask: () => prompt.history('type').value === 'cron',
     },
     criteria: {
-      description: colors.cyan('Message criteria'),
+      description: colors.brightCyan('Message criteria'),
       type: 'string',
       ask: () => prompt.history('type').value === 'message',
     },
     success: {
-      description: colors.cyan('Triggering job (on success)'),
+      description: colors.brightCyan('Triggering job (on success)'),
       type: 'string',
       ask: () => prompt.history('type').value === 'success',
     },
     failure: {
-      description: colors.cyan('Triggering job (on failure)'),
+      description: colors.brightCyan('Triggering job (on failure)'),
       type: 'string',
       ask: () => prompt.history('type').value === 'failure',
     },
@@ -104,12 +110,14 @@ const triggerForm = {
 const credentialForm = {
   properties: {
     name: {
-      description: colors.cyan('Credential name'),
+      description: colors.brightCyan('Credential name'),
       type: 'string',
       required: true,
+      conform: value => duplicateCheck(value, credentials),
+      message: 'credential names must be unique',
     },
     body: {
-      description: colors.cyan('Path to credential.json'),
+      description: colors.brightCyan('Path to credential.json'),
       type: 'string',
       required: true,
     },
@@ -132,7 +140,7 @@ async function setDest() {
     {
       name: 'dest',
       required: true,
-      description: colors.cyan('Where do you want to save the generated yaml?'),
+      description: colors.brightCyan('Where do you want to save the generated yaml?'),
       default: './tmp/project.yaml',
     },
   ]);
