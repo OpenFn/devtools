@@ -10,6 +10,12 @@ const fs = require('fs');
 prompt.colors = false;
 prompt.message = '';
 
+let outputPath = '';
+let type = '';
+let jobs = {};
+let triggers = {};
+let credentials = {};
+
 console.log(
   'Welcome to the project spec generator.',
   'This wizard will help you generate a project.yaml file',
@@ -20,7 +26,9 @@ console.log(
 
 const another = thing => ({
   another: {
-    description: colors.brightCyan(`Would you like to add another ${thing}? (y/n)`),
+    description: colors.brightCyan(
+      `Would you like to add another ${thing}? (y/n)`
+    ),
     type: 'string',
     message: 'please enter "y" or "n"',
   },
@@ -28,18 +36,22 @@ const another = thing => ({
 
 const duplicateCheck = (val, obj) => !Object.keys(obj).includes(val);
 
+const name = (arr, thing) => ({
+  name: {
+    description: colors.brightCyan(`${thing} name`),
+    type: 'string',
+    required: true,
+    conform: value => duplicateCheck(value, arr),
+    message: `${thing} names must be unique; please try something else.`,
+  },
+});
+
 const jobForm = {
   properties: {
-    name: {
-      description: colors.brightCyan('Job name'),
-      type: 'string',
-      required: true,
-      conform: value => duplicateCheck(value, jobs),
-      message: 'job names must be unique',
-    },
+    ...name(jobs, 'Job'),
     expression: {
       description: colors.brightCyan(
-        'Path to the job (probably a job.js file) or the expression itself'
+        'Path to the job (./my-job.js) or the expression itself'
       ),
       type: 'string',
       required: true,
@@ -66,13 +78,7 @@ const jobForm = {
 
 const triggerForm = {
   properties: {
-    name: {
-      description: colors.brightCyan('Trigger name'),
-      type: 'string',
-      required: true,
-      conform: value => duplicateCheck(value, triggers),
-      message: 'trigger names must be unique',
-    },
+    ...name(triggers, 'Trigger'),
     type: {
       description: colors.brightCyan(
         'Trigger type (cron | message | success | failure)'
@@ -109,13 +115,7 @@ const triggerForm = {
 
 const credentialForm = {
   properties: {
-    name: {
-      description: colors.brightCyan('Credential name'),
-      type: 'string',
-      required: true,
-      conform: value => duplicateCheck(value, credentials),
-      message: 'credential names must be unique',
-    },
+    ...name(credentials, 'Credential'),
     body: {
       description: colors.brightCyan('Path to credential.json'),
       type: 'string',
@@ -135,12 +135,32 @@ const removeFalsy = obj => {
   return newObj;
 };
 
+async function setType() {
+  const { type } = await prompt.get([
+    {
+      name: 'type',
+      required: true,
+      description: colors.brightCyan(
+        'Do you want to generate a monolith project.yaml or a URI-based project.yaml?\n',
+        '(monolith | uri)'
+      ),
+      conform: value => value === 'uri',
+      message: 'Sorry, only "uri" is supported right now.',
+      default: 'uri',
+    },
+  ]);
+
+  return type;
+}
+
 async function setDest() {
   const { dest } = await prompt.get([
     {
       name: 'dest',
       required: true,
-      description: colors.brightCyan('Where do you want to save the generated yaml?'),
+      description: colors.brightCyan(
+        'Where do you want to save the generated yaml?'
+      ),
       default: './tmp/project.yaml',
     },
   ]);
@@ -178,17 +198,15 @@ async function addCredential() {
   console.log('OK. Credentials written.');
 }
 
-let destination_path = '';
-let jobs = {};
-let triggers = {};
-let credentials = {};
-let outputPath = '';
-
 prompt.start();
 
 setDest()
   .then(dest => {
     outputPath = dest;
+    return setType();
+  })
+  .then(type => {
+    type = type;
     console.log("Let's add your first job.");
     return addJob();
   })
@@ -201,11 +219,15 @@ setDest()
     return addCredential();
   })
   .then(() => {
-    const data = yaml.dump({ jobs, triggers, credentials });
-    console.log('Project yaml configuration complete:');
-    console.log(data);
-    console.log(`Writing to ${outputPath}`);
-    fs.writeFileSync(outputPath, data);
+    if (type === 'monolith') {
+      // TODO: open the files, grab the JSON, write it as yaml.
+    } else {
+      const data = yaml.dump({ jobs, triggers, credentials });
+      console.log('Project yaml configuration complete:');
+      console.log(data);
+      console.log(`Writing to ${outputPath}`);
+      fs.writeFileSync(outputPath, data);
+    }
     console.log(`Done.`);
   })
   .catch(err => {
