@@ -5,7 +5,13 @@
 // =============================================================================
 
 var inquirer = require('inquirer');
-inquirer.registerPrompt('fuzzypath', require('inquirer-fuzzy-path'));
+
+const inquirerFileTreeSelection = require('inquirer-file-tree-selection-prompt');
+inquirer.registerPrompt('file-tree-selection', inquirerFileTreeSelection);
+
+const { PathPrompt } = require('inquirer-path');
+inquirer.registerPrompt('path', PathPrompt);
+
 var colors = require('colors/safe');
 const gfynonce = require('gfynonce');
 const yaml = require('js-yaml');
@@ -62,11 +68,8 @@ const jobForm = [
   {
     name: 'expression',
     message: 'Path to the job expression',
-    type: 'fuzzypath',
-    required: true,
-    excludePath: nodePath =>
-      nodePath.startsWith('node_modules') || nodePath.startsWith('.'),
-    depthLimit: 1,
+    type: 'file-tree-selection',
+    validate: value => value.endsWith('.js'),
   },
   {
     name: 'adaptor',
@@ -207,10 +210,7 @@ inquirer
       required: true,
       message: 'Where do you want to save the generated yaml?',
       default: './tmp/project.yaml',
-      type: 'fuzzypath',
-      excludePath: nodePath => nodePath.startsWith('node_modules'),
-      excludeFilter: nodePath => nodePath == '.',
-      depthLimit: 1,
+      type: 'string',
     },
   ])
   .then(({ dest }) => {
