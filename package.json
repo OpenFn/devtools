@@ -11,8 +11,10 @@
   "dependencies": {
     "@octokit/rest": "^18.0.12",
     "@openfn/simple-ast": "~0.2.7",
+    "chai": "^4.3.3",
     "doclet-query": "github:openfn/jsdoc-query#master",
     "fs": "0.0.1-security",
+    "gfynonce": "^1.0.1",
     "js-yaml": "^4.0.0",
     "jsdoc-api": "1.1.0",
     "minimist": "^1.2.5",

@@ -6,6 +6,7 @@
 
 var prompt = require('prompt');
 var colors = require('colors/safe');
+const gfynonce = require('gfynonce');
 const yaml = require('js-yaml');
 const fs = require('fs');
 
@@ -43,6 +44,10 @@ const name = (arr, thing) => ({
     description: colors.brightCyan(`${thing} name`),
     type: 'string',
     required: true,
+    default: `${gfynonce({
+      adjectives: 1,
+      separator: '-',
+    })}-${thing}`.toLowerCase(),
     before: value => {
       if (value.includes(' ')) {
         const safeName = value.replace(/\s+/g, '-');
@@ -98,17 +103,20 @@ const triggerForm = {
       conform: value =>
         ['cron', 'message', 'success', 'failure'].includes(value),
       type: 'string',
+      default: 'cron',
       required: true,
       message: 'please enter "cron", "message", "success", or "failure"',
     },
     cron: {
       description: colors.brightCyan('Trigger cron'),
       type: 'string',
+      default: '* * * * *',
       ask: () => prompt.history('type').value === 'cron',
     },
     criteria: {
       description: colors.brightCyan('Message criteria'),
       type: 'string',
+      default: '{"a": 1}',
       ask: () => prompt.history('type').value === 'message',
     },
     success: {
@@ -158,8 +166,7 @@ async function setType() {
         'Do you want to generate a monolith project.yaml or a URI-based project.yaml?\n',
         '(monolith | uri)'
       ),
-      conform: value => value === 'uri',
-      message: 'Sorry, only "uri" is supported right now.',
+      conform: value => ['uri', 'monolith'].includes(value),
       default: 'uri',
     },
   ]);
@@ -219,7 +226,8 @@ setDest()
     outputPath = dest;
     return setType();
   })
-  .then(() => {
+  .then(yamlType => {
+    type = yamlType;
     console.log("Let's add some triggers.");
     return addTrigger();
   })
@@ -227,28 +235,28 @@ setDest()
     console.log("Let's add some credentials.");
     return addCredential();
   })
-  .then(type => {
-    type = type;
+  .then(() => {
     console.log("Let's add your first job.");
     return addJob();
   })
   .then(() => {
-    let data;
     if (type === 'monolith') {
-      const monoCredentials = credentials.map(c => {
-        // Map values?
-        return c;
-      });
+      const monoCredentials = {};
 
-      const monoJobs = jobs.map(job => {
-        const expressionString = fs.readFileSync(job.expression).toString();
-        return { ...job, expression: expressionString };
-      });
+      credentials = Object.keys(credentials).reduce((acc, key) => {
+        acc[key] = fs.readFileSync(credentials[key]).toString();
+        return acc;
+      }, {});
 
-      data = yaml.dump({ monoJobs, monoCredentials, triggers });
-    } else {
-      data = yaml.dump({ jobs, credentials, triggers });
+      Object.keys(jobs).reduce((acc, key) => {
+        acc[key][expression] = fs
+          .readFileSync(jobs[key][expression])
+          .toString();
+        return acc;
+      }, {});
     }
+
+    const data = yaml.dump({ jobs, credentials, triggers });
     console.log('Project yaml configuration complete:');
     console.log(data);
     console.log(`Writing to ${outputPath}`);
