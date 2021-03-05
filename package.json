@@ -12,13 +12,14 @@
     "@octokit/rest": "^18.0.12",
     "@openfn/simple-ast": "~0.2.7",
     "chai": "^4.3.3",
+    "colors": "^1.4.0",
     "doclet-query": "github:openfn/jsdoc-query#master",
     "fs": "0.0.1-security",
     "gfynonce": "^1.0.1",
+    "inquirer": "^8.0.0",
     "js-yaml": "^4.0.0",
     "jsdoc-api": "1.1.0",
     "minimist": "^1.2.5",
-    "prompt": "^1.1.0",
     "xml2json": "^0.11.0"
   },
   "devDependencies": {

@@ -4,14 +4,11 @@
 // Node script to generate a project.yaml for use with microservice or platform
 // =============================================================================
 
-var prompt = require('prompt');
+var inquirer = require('inquirer');
 var colors = require('colors/safe');
 const gfynonce = require('gfynonce');
 const yaml = require('js-yaml');
 const fs = require('fs');
-
-prompt.colors = false;
-prompt.message = '';
 
 let outputPath = '';
 let type = '';
@@ -22,130 +19,136 @@ let credentials = {};
 console.log(
   'Welcome to the project spec generator.',
   'This wizard will help you generate a project.yaml file',
-  `for use with ${colors.brightCyan('OpenFn/platform')} and ${colors.brightCyan(
-    'OpenFn/microservice'
-  )}.`
+  `for use with ${colors.brightMagenta(
+    'OpenFn/platform'
+  )} and ${colors.brightMagenta('OpenFn/microservice')}.`
 );
 
 const another = thing => ({
-  another: {
-    description: colors.brightCyan(
-      `Would you like to add another ${thing}? (y/n)`
-    ),
-    type: 'string',
-    message: 'please enter "y" or "n"',
-  },
+  name: 'another',
+  message: `Would you like to add another ${thing}? (y/n)`,
+  type: 'list',
+  choices: ['yes', 'no'],
 });
 
 const duplicateCheck = (val, obj) => !Object.keys(obj).includes(val);
 
-const name = (arr, thing) => ({
-  name: {
-    description: colors.brightCyan(`${thing} name`),
-    type: 'string',
-    required: true,
-    default: `${gfynonce({
-      adjectives: 1,
-      separator: '-',
-    })}-${thing}`.toLowerCase(),
-    before: value => {
-      if (value.includes(' ')) {
-        const safeName = value.replace(/\s+/g, '-');
-        console.log(
-          `We are replacing spaces with hyphens. The new name will be "${safeName}".`
-        );
-        return safeName;
-      }
-      return value;
-    },
-    conform: value => duplicateCheck(value, arr),
-    message: `${thing} names must be unique; please try something else.`,
-  },
+const name = (arr, thing, rand) => ({
+  name: 'name',
+  message: `${thing} name`,
+  type: 'string',
+  required: true,
+  default: `${gfynonce({
+    adjectives: 1,
+    separator: '-',
+  })}-${thing}`.toLowerCase(),
+  // before: value => {
+  //   if (value.includes(' ')) {
+  //     const safeName = value.replace(/\s+/g, '-');
+  //     console.log(
+  //       `We are replacing spaces with hyphens. The new name will be "${safeName}".`
+  //     );
+  //     return safeName;
+  //   }
+  //   return value;
+  // },
+  validate: value => duplicateCheck(value, arr),
+  error: `${thing} names must be unique; please try something else.`,
 });
 
-const jobForm = {
-  properties: {
-    ...name(jobs, 'Job'),
-    expression: {
-      description: colors.brightCyan(
-        'Path to the job (./my-job.js) or the expression itself'
-      ),
-      type: 'string',
-      required: true,
-    },
-    adaptor: {
-      description: colors.brightCyan('Adaptor'),
-      default: '@openfn/language-http',
-      type: 'string',
-      required: true,
-    },
-    trigger: {
-      description: colors.brightCyan('Trigger'),
-      type: 'string',
-      required: true,
-    },
-    credential: {
-      description: colors.brightCyan('Credential'),
-      type: 'string',
-      required: true,
-    },
-    ...another('job'),
+const jobForm = [
+  name(jobs, 'Job'),
+  {
+    name: 'expression',
+    message: 'Path to the job (./my-job.js) or the expression itself',
+    type: 'string',
+    required: true,
   },
-};
+  {
+    name: 'adaptor',
+    message: 'Adaptor',
+    default: '@openfn/language-http',
+    type: 'list',
+    choices: [
+      // TODO: Pull list from github? Or openfn.org?
+      '@openfn/language-http',
+      '@openfn/language-commcare',
+      '@openfn/language-dhis2',
+      '@openfn/language-kobotoolbox',
+    ],
+    required: true,
+  },
+  {
+    name: 'trigger',
+    message: 'Trigger',
+    type: 'list',
+    choices: () => Object.keys(triggers),
+    required: true,
+  },
+  {
+    name: 'credential',
+    message: 'Credential',
+    type: 'list',
+    choices: () => Object.keys(credentials),
+    required: true,
+  },
+  another('job'),
+];
 
-const triggerForm = {
-  properties: {
-    ...name(triggers, 'Trigger'),
-    type: {
-      description: colors.brightCyan(
-        'Trigger type (cron | message | success | failure)'
-      ),
-      conform: value =>
-        ['cron', 'message', 'success', 'failure'].includes(value),
-      type: 'string',
-      default: 'cron',
-      required: true,
-      message: 'please enter "cron", "message", "success", or "failure"',
-    },
-    cron: {
-      description: colors.brightCyan('Trigger cron'),
-      type: 'string',
-      default: '* * * * *',
-      ask: () => prompt.history('type').value === 'cron',
-    },
-    criteria: {
-      description: colors.brightCyan('Message criteria'),
-      type: 'string',
-      default: '{"a": 1}',
-      ask: () => prompt.history('type').value === 'message',
-    },
-    success: {
-      description: colors.brightCyan('Triggering job (on success)'),
-      type: 'string',
-      // TODO: validate that these jobs exist? How, if we create triggers first?
-      ask: () => prompt.history('type').value === 'success',
-    },
-    failure: {
-      description: colors.brightCyan('Triggering job (on failure)'),
-      type: 'string',
-      // TODO: validate that these jobs exist? How, if we create triggers first?
-      ask: () => prompt.history('type').value === 'failure',
-    },
-    ...another('trigger'),
+const triggerForm = [
+  name(triggers, 'Trigger'),
+  {
+    name: 'type',
+    choices: ['cron', 'message', 'success', 'failure'],
+    message: 'Trigger type',
+    validate: value =>
+      ['cron', 'message', 'success', 'failure'].includes(value),
+    type: 'list',
+    default: 'cron',
+    required: true,
+    error: 'please enter "cron", "message", "success", or "failure"',
   },
-};
+  {
+    name: 'cron',
+    message: 'Trigger cron',
+    type: 'string',
+    default: '* * * * *',
+    when: answers => answers.type === 'cron',
+  },
+  {
+    name: 'criteria',
+    message: 'Message criteria',
+    type: 'string',
+    default: '{"a": 1}',
+    when: answers => answers.type === 'message',
+  },
+  {
+    name: 'success',
+    message: 'Triggering job (on success)',
+    type: 'string',
+    // TODO: validate that these jobs exist? How, if we create triggers first?
+    when: answers => answers.type === 'success',
+  },
+  {
+    name: 'failure',
+    message: 'Triggering job (on failure)',
+    type: 'string',
+    // TODO: validate that these jobs exist? How, if we create triggers first?
+    when: answers => answers.type === 'failure',
+  },
+  another('trigger'),
+];
 
-const credentialForm = {
-  properties: {
-    ...name(credentials, 'Credential'),
-    body: {
-      description: colors.brightCyan('Path to credential.json'),
-      type: 'string',
-      required: true,
-    },
-    ...another('credential'),
+const credentialForm = [
+  name(credentials, 'Credential'),
+  {
+    name: 'body',
+    message: 'Path to credential.json',
+    type: 'string',
+    required: true,
   },
-};
+  another('credential'),
+];
 
 const removeFalsy = obj => {
   let newObj = {};
@@ -157,112 +160,103 @@ const removeFalsy = obj => {
   return newObj;
 };
 
-async function setType() {
-  const { type } = await prompt.get([
-    {
-      name: 'type',
-      required: true,
-      description: colors.brightCyan(
-        'Do you want to generate a monolith project.yaml or a URI-based project.yaml?\n',
-        '(monolith | uri)'
-      ),
-      conform: value => ['uri', 'monolith'].includes(value),
-      default: 'uri',
-    },
-  ]);
-
-  return type;
-}
-
-async function setDest() {
-  const { dest } = await prompt.get([
-    {
-      name: 'dest',
-      required: true,
-      description: colors.brightCyan(
-        'Where do you want to save the generated yaml?'
-      ),
-      default: './tmp/project.yaml',
-    },
-  ]);
-
-  return dest;
-}
-
 async function addJob() {
-  const { name, another, ...rest } = await prompt.get(jobForm);
-  jobs[name] = { ...rest };
+  return inquirer.prompt(jobForm).then(({ name, another, ...rest }) => {
+    console.log(name, rest);
+    jobs[name] = { ...rest };
 
-  if (another === 'y') {
-    return addJob();
-  } else {
-    console.log('OK. Jobs written.');
-  }
+    if (another === 'yes') {
+      return addJob();
+    } else {
+      console.log('OK. Jobs written.');
+    }
+  });
 }
 
-async function addTrigger() {
-  const { name, another, ...rest } = await prompt.get(triggerForm);
-  triggers[name] = { ...removeFalsy(rest) };
+function addTrigger() {
+  return inquirer.prompt(triggerForm).then(({ name, another, ...rest }) => {
+    console.log(name, rest);
+    triggers[name] = { ...removeFalsy(rest) };
 
-  if (another === 'y') {
-    return addTrigger();
-  } else {
-    console.log('OK. Triggers written.');
-  }
+    if (another === 'yes') {
+      return addTrigger();
+    } else {
+      console.log('OK. Triggers written.');
+    }
+  });
 }
 
 async function addCredential() {
-  const { name, another, body } = await prompt.get(credentialForm);
-  credentials[name] = body;
+  return inquirer.prompt(credentialForm).then(({ name, another, body }) => {
+    console.log(name, body);
+    credentials[name] = body;
 
-  if (another === 'y') return addCredential();
-  console.log('OK. Credentials written.');
+    if (another === 'yes') return addCredential();
+    console.log('OK. Credentials written.');
+  });
 }
 
-prompt.start();
-
-setDest()
-  .then(dest => {
+inquirer
+  .prompt([
+    {
+      name: 'dest',
+      required: true,
+      message: 'Where do you want to save the generated yaml?',
+      default: './tmp/project.yaml',
+    },
+  ])
+  .then(({ dest }) => {
     outputPath = dest;
-    return setType();
+    return inquirer.prompt({
+      name: 'outputStyle',
+      required: true,
+      message:
+        'Do you want to generate a monolith project.yaml or a URI-based project.yaml?',
+      validate: value => ['uri', 'monolith'].includes(value),
+      type: 'list',
+      choices: ['monolith', 'uri'],
+      default: 'uri',
+    });
   })
-  .then(yamlType => {
-    type = yamlType;
-    console.log("Let's add some triggers.");
+  .then(({ outputStyle }) => {
+    type = outputStyle;
+    console.log("Great. Let's add your triggers.");
     return addTrigger();
   })
   .then(() => {
-    console.log("Let's add some credentials.");
+    console.log("Next let's add your credentials.");
     return addCredential();
   })
   .then(() => {
-    console.log("Let's add your first job.");
+    console.log("Finally, let's add your jobs.");
     return addJob();
   })
-  .then(() => {
-    if (type === 'monolith') {
-      const monoCredentials = {};
-
-      credentials = Object.keys(credentials).reduce((acc, key) => {
-        acc[key] = fs.readFileSync(credentials[key]).toString();
-        return acc;
-      }, {});
-
-      Object.keys(jobs).reduce((acc, key) => {
-        acc[key][expression] = fs
-          .readFileSync(jobs[key][expression])
-          .toString();
-        return acc;
-      }, {});
-    }
-
+  .then(type => {
     const data = yaml.dump({ jobs, credentials, triggers });
-    console.log('Project yaml configuration complete:');
     console.log(data);
-    console.log(`Writing to ${outputPath}`);
-    fs.writeFileSync(outputPath, data);
-    console.log(`Done.`);
+
+    // if (type === 'monolith') {
+    //   credentials = Object.keys(credentials).reduce((acc, key) => {
+    //     acc[key] = fs.readFileSync(credentials[key]).toString();
+    //     return acc;
+    //   }, {});
+
+    //   Object.keys(jobs).reduce((acc, key) => {
+    //     acc[key][expression] = fs
+    //       .readFileSync(jobs[key][expression])
+    //       .toString();
+    //     return acc;
+    //   }, {});
+    // }
+
+    // const data = yaml.dump({ jobs, credentials, triggers });
+    // console.log('Project yaml configuration complete:');
+    // console.log(data);
+    // console.log(`Writing to ${outputPath}`);
+    // fs.writeFileSync(outputPath, data);
+    // console.log(`Done.`);
   })
   .catch(err => {
-    console.log('\n', "That didn't work. Error:", err.message);
+    console.error(err);
+    console.log("Well, that didn't work.");
   });
