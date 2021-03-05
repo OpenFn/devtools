@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 // =============================================================================
 // Node script to generate a project.yaml for use with microservice or platform
 // =============================================================================
@@ -41,6 +43,16 @@ const name = (arr, thing) => ({
     description: colors.brightCyan(`${thing} name`),
     type: 'string',
     required: true,
+    before: value => {
+      if (value.includes(' ')) {
+        const safeName = value.replace(/\s+/g, '-');
+        console.log(
+          `We are replacing spaces with hyphens. The new name will be "${safeName}".`
+        );
+        return safeName;
+      }
+      return value;
+    },
     conform: value => duplicateCheck(value, arr),
     message: `${thing} names must be unique; please try something else.`,
   },
@@ -102,11 +114,13 @@ const triggerForm = {
     success: {
       description: colors.brightCyan('Triggering job (on success)'),
       type: 'string',
+      // TODO: validate that these jobs exist? How, if we create triggers first?
       ask: () => prompt.history('type').value === 'success',
     },
     failure: {
       description: colors.brightCyan('Triggering job (on failure)'),
       type: 'string',
+      // TODO: validate that these jobs exist? How, if we create triggers first?
       ask: () => prompt.history('type').value === 'failure',
     },
     ...another('trigger'),
@@ -205,11 +219,6 @@ setDest()
     outputPath = dest;
     return setType();
   })
-  .then(type => {
-    type = type;
-    console.log("Let's add your first job.");
-    return addJob();
-  })
   .then(() => {
     console.log("Let's add some triggers.");
     return addTrigger();
@@ -218,16 +227,32 @@ setDest()
     console.log("Let's add some credentials.");
     return addCredential();
   })
+  .then(type => {
+    type = type;
+    console.log("Let's add your first job.");
+    return addJob();
+  })
   .then(() => {
+    let data;
     if (type === 'monolith') {
-      // TODO: open the files, grab the JSON, write it as yaml.
+      const monoCredentials = credentials.map(c => {
+        // Map values?
+        return c;
+      });
+
+      const monoJobs = jobs.map(job => {
+        const expressionString = fs.readFileSync(job.expression).toString();
+        return { ...job, expression: expressionString };
+      });
+
+      data = yaml.dump({ monoJobs, monoCredentials, triggers });
     } else {
-      const data = yaml.dump({ jobs, triggers, credentials });
-      console.log('Project yaml configuration complete:');
-      console.log(data);
-      console.log(`Writing to ${outputPath}`);
-      fs.writeFileSync(outputPath, data);
+      data = yaml.dump({ jobs, credentials, triggers });
     }
+    console.log('Project yaml configuration complete:');
+    console.log(data);
+    console.log(`Writing to ${outputPath}`);
+    fs.writeFileSync(outputPath, data);
     console.log(`Done.`);
   })
   .catch(err => {
