@@ -5,6 +5,7 @@
 // =============================================================================
 
 var inquirer = require('inquirer');
+inquirer.registerPrompt('fuzzypath', require('inquirer-fuzzy-path'));
 var colors = require('colors/safe');
 const gfynonce = require('gfynonce');
 const yaml = require('js-yaml');
@@ -60,9 +61,12 @@ const jobForm = [
   name(jobs, 'Job'),
   {
     name: 'expression',
-    message: 'Path to the job (./my-job.js) or the expression itself',
-    type: 'string',
+    message: 'Path to the job expression',
+    type: 'fuzzypath',
     required: true,
+    excludePath: nodePath =>
+      nodePath.startsWith('node_modules') || nodePath.startsWith('.'),
+    depthLimit: 1,
   },
   {
     name: 'adaptor',
@@ -203,6 +207,10 @@ inquirer
       required: true,
       message: 'Where do you want to save the generated yaml?',
       default: './tmp/project.yaml',
+      type: 'fuzzypath',
+      excludePath: nodePath => nodePath.startsWith('node_modules'),
+      excludeFilter: nodePath => nodePath == '.',
+      depthLimit: 1,
     },
   ])
   .then(({ dest }) => {
