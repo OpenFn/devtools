@@ -7,6 +7,10 @@
     "type": "git",
     "url": "https://github.com/openfn/devtools.git"
   },
+  "scripts": {
+    "test": "mocha",
+    "test:watch": "mocha -w --watch-files test,scripts"
+  },
   "license": "LGPL-3.0",
   "dependencies": {
     "@octokit/rest": "^18.0.12",
@@ -17,6 +21,7 @@
     "fs": "0.0.1-security",
     "gfynonce": "^1.0.1",
     "inquirer": "^8.0.0",
+    "inquirer-file-path": "^1.0.1",
     "inquirer-file-tree-selection-prompt": "^1.0.7",
     "inquirer-path": "^1.0.0-beta5",
     "js-yaml": "^4.0.0",
@@ -26,6 +31,8 @@
   },
   "devDependencies": {
     "@babel/cli": "^7.12.10",
-    "@babel/core": "^7.9.0"
+    "@babel/core": "^7.9.0",
+    "inquirer-test": "^2.0.1",
+    "mocha": "^8.3.1"
   }
 }

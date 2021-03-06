@@ -1,9 +1,7 @@
 #!/usr/bin/env node
-
 // =============================================================================
 // Node script to generate a project.yaml for use with microservice or platform
 // =============================================================================
-
 var inquirer = require('inquirer');
 
 const inquirerFileTreeSelection = require('inquirer-file-tree-selection-prompt');
@@ -11,6 +9,8 @@ inquirer.registerPrompt('file-tree-selection', inquirerFileTreeSelection);
 
 const { PathPrompt } = require('inquirer-path');
 inquirer.registerPrompt('path', PathPrompt);
+
+inquirer.registerPrompt('filePath', require('inquirer-file-path'));
 
 var colors = require('colors/safe');
 const gfynonce = require('gfynonce');
@@ -33,9 +33,10 @@ console.log(
 
 const another = thing => ({
   name: 'another',
-  message: `Would you like to add another ${thing}? (y/n)`,
+  message: `Would you like to add another ${thing}?`,
   type: 'list',
   choices: ['yes', 'no'],
+  default: 'no',
 });
 
 const duplicateCheck = (val, obj) => !Object.keys(obj).includes(val);
@@ -68,8 +69,9 @@ const jobForm = [
   {
     name: 'expression',
     message: 'Path to the job expression',
-    type: 'file-tree-selection',
-    validate: value => value.endsWith('.js'),
+    type: 'string',
+    // type: 'file-tree-selection',
+    // validate: value => value.endsWith('.js'),
   },
   {
     name: 'adaptor',
@@ -211,6 +213,9 @@ inquirer
       message: 'Where do you want to save the generated yaml?',
       default: './tmp/project.yaml',
       type: 'string',
+      // validate: value => {
+      //   fs.closeSync(fs.openSync(value, 'w'));
+      // },
     },
   ])
   .then(({ dest }) => {
@@ -240,9 +245,6 @@ inquirer
     return addJob();
   })
   .then(type => {
-    const data = yaml.dump({ jobs, credentials, triggers });
-    console.log(data);
-
     // if (type === 'monolith') {
     //   credentials = Object.keys(credentials).reduce((acc, key) => {
     //     acc[key] = fs.readFileSync(credentials[key]).toString();
@@ -257,12 +259,12 @@ inquirer
     //   }, {});
     // }
 
-    // const data = yaml.dump({ jobs, credentials, triggers });
-    // console.log('Project yaml configuration complete:');
-    // console.log(data);
-    // console.log(`Writing to ${outputPath}`);
-    // fs.writeFileSync(outputPath, data);
-    // console.log(`Done.`);
+    const data = yaml.dump({ jobs, credentials, triggers });
+    console.log('Project yaml configuration complete:');
+    console.log(data);
+    console.log(`Writing to ${outputPath}`);
+    fs.writeFileSync(outputPath, data);
+    console.log(`Done.`);
   })
   .catch(err => {
     console.error(err);
