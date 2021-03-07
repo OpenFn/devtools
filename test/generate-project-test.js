@@ -47,7 +47,8 @@ describe('generate-project.js', function () {
         ENTER,
         ENTER,
         ENTER,
-      ]
+      ],
+      100
     );
     console.log(result);
 
