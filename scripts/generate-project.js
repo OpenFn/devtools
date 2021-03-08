@@ -64,8 +64,12 @@ const jobForm = [
     message: 'Path to the job expression',
     type: 'fuzzypath',
     excludePath: nodePath => excludeHeavyPaths(nodePath),
-    validate: value =>
-      value.endsWith('.js') || 'Please choose a path ending in ".js"',
+    validate: value => {
+      if (!value.endsWith('.js')) return 'Please choose a path ending in ".js"';
+      if (!fs.existsSync(value))
+        return "We can't find a file there, please double-check your path.";
+      return true;
+    },
     suggestOnly: true,
     filter: value => `file://${value}`,
   },
@@ -151,8 +155,13 @@ const credentialForm = [
     message: 'Path to credential.json',
     type: 'fuzzypath',
     excludePath: nodePath => excludeHeavyPaths(nodePath),
-    validate: value =>
-      value.endsWith('.json') || 'Please enter a path ending in ".json"',
+    validate: value => {
+      if (!value.endsWith('.json'))
+        return 'Please choose a path ending in ".json"';
+      if (!fs.existsSync(value))
+        return "We can't find a file there, please double-check your path.";
+      return true;
+    },
     suggestOnly: true,
     filter: value => `file://${value}`,
   },
