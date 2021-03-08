@@ -66,6 +66,8 @@ const jobForm = [
     excludePath: nodePath => excludeHeavyPaths(nodePath),
     validate: value =>
       value.endsWith('.js') || 'Please choose a path ending in ".js"',
+    validate: value =>
+      fs.existsSync(value) || 'We can\'t find a file there, please double-check your path.',
     suggestOnly: true,
     filter: value => `file://${value}`,
   },
@@ -153,6 +155,8 @@ const credentialForm = [
     excludePath: nodePath => excludeHeavyPaths(nodePath),
     validate: value =>
       value.endsWith('.json') || 'Please enter a path ending in ".json"',
+    validate: value =>
+      fs.existsSync(value) || 'We can\'t find a file there, please double-check your path.',  
     suggestOnly: true,
     filter: value => `file://${value}`,
   },
