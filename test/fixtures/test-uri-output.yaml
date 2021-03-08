@@ -1,0 +1,12 @@
+jobs:
+  job-1:
+    expression: file://test/fixtures/sampleExpression.js
+    adaptor: '@openfn/language-http'
+    trigger: trigger-1
+    credential: credential-1
+credentials:
+  credential-1: file://test/fixtures/sampleCredential.json
+triggers:
+  trigger-1:
+    type: message
+    criteria: '{"b": 5}'

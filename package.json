@@ -7,18 +7,34 @@
     "type": "git",
     "url": "https://github.com/openfn/devtools.git"
   },
+  "scripts": {
+    "test": "mocha",
+    "generate": "./scripts/generate-project.js",
+    "test:watch": "mocha -w --watch-files test,scripts --watch-ignore test/fixtures"
+  },
   "license": "LGPL-3.0",
   "dependencies": {
     "@octokit/rest": "^18.0.12",
     "@openfn/simple-ast": "~0.2.7",
+    "chai": "^4.3.3",
+    "colors": "^1.4.0",
     "doclet-query": "github:openfn/jsdoc-query#master",
     "fs": "0.0.1-security",
+    "gfynonce": "^1.0.1",
+    "inquirer": "^8.0.0",
+    "inquirer-file-path": "^1.0.1",
+    "inquirer-file-tree-selection-prompt": "^1.0.7",
+    "inquirer-fuzzy-path": "^2.3.0",
+    "inquirer-path": "^1.0.0-beta5",
+    "js-yaml": "^4.0.0",
     "jsdoc-api": "1.1.0",
     "minimist": "^1.2.5",
     "xml2json": "^0.11.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.12.10",
-    "@babel/core": "^7.9.0"
+    "@babel/core": "^7.9.0",
+    "inquirer-test": "^2.0.1",
+    "mocha": "^8.3.1"
   }
 }
