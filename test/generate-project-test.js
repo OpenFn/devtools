@@ -6,22 +6,13 @@ const fs = require('fs');
 const cliPath = './scripts/generate-project.js';
 const testOutputPath = './testProject.yaml';
 
-const expectedMonoBuffer = fs.readFileSync(
-  './test/fixtures/test-mono-output.yaml'
-);
-const expectedUriBuffer = fs.readFileSync(
-  './test/fixtures/test-uri-output.yaml'
-);
+const expectedMono = fs.readFileSync('./test/fixtures/test-mono-output.yaml');
+const expectedURI = fs.readFileSync('./test/fixtures/test-uri-output.yaml');
 
 describe('generate-project.js', function () {
   this.timeout(15000);
-  it('should create a uri-based project.yaml', async function () {
-    try {
-      fs.accessSync(testOutputPath);
-      throw 'test output file already exists';
-    } catch (err) {
-      console.log('no previous output file, starting test');
-    }
+  it('should create a uri-based project.yaml', async () => {
+    expect(fs.existsSync(testOutputPath)).to.be.false;
 
     const result = await run(
       [cliPath],
@@ -59,16 +50,11 @@ describe('generate-project.js', function () {
 
     const file = fs.readFileSync(testOutputPath);
     fs.unlinkSync(testOutputPath);
-    expect(file.equals(expectedUriBuffer)).to.be.true;
+    expect(file.equals(expectedURI)).to.be.true;
   });
 
-  it('should create a monolith-based project.yaml', async function () {
-    try {
-      fs.accessSync(testOutputPath);
-      throw 'test output file already exists';
-    } catch (err) {
-      console.log('no previous output file, starting test');
-    }
+  it('should create a monolith-based project.yaml', async () => {
+    expect(fs.existsSync(testOutputPath)).to.be.false;
 
     fs.writeFileSync(
       'test/fixtures/sampleCredential.json',
@@ -112,6 +98,6 @@ describe('generate-project.js', function () {
     const file = fs.readFileSync(testOutputPath);
 
     fs.unlinkSync(testOutputPath);
-    expect(file.equals(expectedMonoBuffer)).to.be.true;
+    expect(file.equals(expectedMono)).to.be.true;
   });
 });
