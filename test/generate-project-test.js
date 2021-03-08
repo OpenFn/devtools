@@ -15,7 +15,7 @@ const expectedUriBuffer = fs.readFileSync(
 
 describe('generate-project.js', function () {
   this.timeout(15000);
-  it('should create a uri-based project.yaml', async function () {
+  it.only('should create a uri-based project.yaml', async function () {
     try {
       fs.accessSync(testOutputPath);
       throw 'test output file already exists';
@@ -53,6 +53,8 @@ describe('generate-project.js', function () {
       ],
       100
     );
+
+    console.log(result);
 
     const lines = result.split(/\r?\n/);
     expect(lines[lines.length - 2]).to.eq('Done. Happy integrating.');
