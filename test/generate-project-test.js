@@ -4,7 +4,6 @@ const expect = require('chai').expect;
 const fs = require('fs');
 
 const cliPath = './scripts/generate-project.js';
-const testOutputPath = './testProject.yaml';
 
 const expectedMono = fs.readFileSync('./test/fixtures/test-mono-output.yaml');
 const expectedURI = fs.readFileSync('./test/fixtures/test-uri-output.yaml');
@@ -12,6 +11,7 @@ const expectedURI = fs.readFileSync('./test/fixtures/test-uri-output.yaml');
 describe('generate-project.js', function () {
   this.timeout(15000);
   it('should create a uri-based project.yaml', async () => {
+    const testOutputPath = './_test-URI-project.yaml';
     expect(fs.existsSync(testOutputPath)).to.be.false;
 
     const result = await run(
@@ -54,6 +54,7 @@ describe('generate-project.js', function () {
   });
 
   it('should create a monolith-based project.yaml', async () => {
+    const testOutputPath = './_test-MONO-project.yaml';
     expect(fs.existsSync(testOutputPath)).to.be.false;
 
     fs.writeFileSync(
