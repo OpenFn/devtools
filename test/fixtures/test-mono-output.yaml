@@ -1,0 +1,19 @@
+jobs:
+  job-1:
+    expression: |
+      get('https://www.example.com', {});
+      alterState(state => {
+        console.log('Test complete.');
+        return state;
+      });
+    adaptor: '@openfn/language-http'
+    trigger: trigger-1
+    credential: credential-1
+credentials:
+  credential-1:
+    user: secret
+    pass: shhh
+triggers:
+  trigger-1:
+    type: message
+    criteria: '{"b": 5}'

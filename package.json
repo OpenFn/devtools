@@ -9,7 +9,8 @@
   },
   "scripts": {
     "test": "mocha",
-    "test:watch": "mocha -w --watch-files test,scripts"
+    "generate": "./scripts/generate-project.js",
+    "test:watch": "mocha -w --watch-files test,scripts --watch-ignore test/fixtures"
   },
   "license": "LGPL-3.0",
   "dependencies": {
@@ -23,6 +24,7 @@
     "inquirer": "^8.0.0",
     "inquirer-file-path": "^1.0.1",
     "inquirer-file-tree-selection-prompt": "^1.0.7",
+    "inquirer-fuzzy-path": "^2.3.0",
     "inquirer-path": "^1.0.0-beta5",
     "js-yaml": "^4.0.0",
     "jsdoc-api": "1.1.0",

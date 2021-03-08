@@ -3,14 +3,7 @@
 // Node script to generate a project.yaml for use with microservice or platform
 // =============================================================================
 var inquirer = require('inquirer');
-
-const inquirerFileTreeSelection = require('inquirer-file-tree-selection-prompt');
-inquirer.registerPrompt('file-tree-selection', inquirerFileTreeSelection);
-
-const { PathPrompt } = require('inquirer-path');
-inquirer.registerPrompt('path', PathPrompt);
-
-inquirer.registerPrompt('filePath', require('inquirer-file-path'));
+inquirer.registerPrompt('fuzzypath', require('inquirer-fuzzy-path'));
 
 var colors = require('colors/safe');
 const gfynonce = require('gfynonce');
@@ -69,9 +62,12 @@ const jobForm = [
   {
     name: 'expression',
     message: 'Path to the job expression',
-    type: 'string',
-    // type: 'file-tree-selection',
-    // validate: value => value.endsWith('.js'),
+    type: 'fuzzypath',
+    excludePath: nodePath => excludeHeavyPaths(nodePath),
+    validate: value =>
+      value.endsWith('.js') || 'Please choose a path ending in ".js"',
+    suggestOnly: true,
+    filter: value => `file://${value}`,
   },
   {
     name: 'adaptor',
@@ -153,8 +149,12 @@ const credentialForm = [
   {
     name: 'body',
     message: 'Path to credential.json',
-    type: 'string',
-    required: true,
+    type: 'fuzzypath',
+    excludePath: nodePath => excludeHeavyPaths(nodePath),
+    validate: value =>
+      value.endsWith('.json') || 'Please enter a path ending in ".json"',
+    suggestOnly: true,
+    filter: value => `file://${value}`,
   },
   another('credential'),
 ];
@@ -171,7 +171,6 @@ const removeFalsy = obj => {
 
 async function addJob() {
   return inquirer.prompt(jobForm).then(({ name, another, ...rest }) => {
-    console.log(name, rest);
     jobs[name] = { ...rest };
 
     if (another === 'yes') {
@@ -184,7 +183,6 @@ async function addJob() {
 
 function addTrigger() {
   return inquirer.prompt(triggerForm).then(({ name, another, ...rest }) => {
-    console.log(name, rest);
     triggers[name] = { ...removeFalsy(rest) };
 
     if (another === 'yes') {
@@ -197,7 +195,6 @@ function addTrigger() {
 
 async function addCredential() {
   return inquirer.prompt(credentialForm).then(({ name, another, body }) => {
-    console.log(name, body);
     credentials[name] = body;
 
     if (another === 'yes') return addCredential();
@@ -205,17 +202,28 @@ async function addCredential() {
   });
 }
 
+const excludeHeavyPaths = nodePath => {
+  return [
+    'node_modules',
+    '.git',
+    'builds',
+    'adaptors',
+    'core',
+    'docs',
+  ].some(x => nodePath.startsWith(x));
+};
+
 inquirer
   .prompt([
     {
       name: 'dest',
       required: true,
       message: 'Where do you want to save the generated yaml?',
-      default: './tmp/project.yaml',
-      type: 'string',
-      // validate: value => {
-      //   fs.closeSync(fs.openSync(value, 'w'));
-      // },
+      type: 'fuzzypath',
+      excludePath: nodePath => excludeHeavyPaths(nodePath),
+      validate: value =>
+        value.endsWith('.yaml') || 'Please choose a path ending in ".yaml"',
+      suggestOnly: true,
     },
   ])
   .then(({ dest }) => {
@@ -244,29 +252,36 @@ inquirer
     console.log("Finally, let's add your jobs.");
     return addJob();
   })
-  .then(type => {
-    // if (type === 'monolith') {
-    //   credentials = Object.keys(credentials).reduce((acc, key) => {
-    //     acc[key] = fs.readFileSync(credentials[key]).toString();
-    //     return acc;
-    //   }, {});
+  .then(() => {
+    if (type === 'monolith') {
+      credentials = Object.keys(credentials).reduce((acc, key) => {
+        acc[key] = JSON.parse(
+          fs.readFileSync(credentials[key].replace('file://', '')).toString()
+        );
+        return acc;
+      }, {});
 
-    //   Object.keys(jobs).reduce((acc, key) => {
-    //     acc[key][expression] = fs
-    //       .readFileSync(jobs[key][expression])
-    //       .toString();
-    //     return acc;
-    //   }, {});
-    // }
+      Object.keys(jobs).forEach(key => {
+        const expressionString = fs
+          .readFileSync(jobs[key]['expression'].replace('file://', ''))
+          .toString();
 
-    const data = yaml.dump({ jobs, credentials, triggers });
+        jobs[key]['expression'] = expressionString;
+      });
+    }
+
+    const jsonProject = { jobs, credentials, triggers };
+    const yamlString = yaml.dump(jsonProject);
+
     console.log('Project yaml configuration complete:');
-    console.log(data);
+    console.log(yamlString);
+
     console.log(`Writing to ${outputPath}`);
-    fs.writeFileSync(outputPath, data);
-    console.log(`Done.`);
-  })
-  .catch(err => {
-    console.error(err);
-    console.log("Well, that didn't work.");
+    fs.writeFileSync(outputPath, yamlString);
+    console.log(`Done. Happy integrating.`);
+    return [jsonProject, yamlString];
   });
+// .catch(err => {
+//   console.error(err);
+//   console.log("Well, that didn't work.");
+// });
