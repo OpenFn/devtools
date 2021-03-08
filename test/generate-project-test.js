@@ -45,8 +45,6 @@ describe('generate-project.js', function () {
       100
     );
 
-    console.log(result);
-
     const lines = result.split(/\r?\n/);
     expect(lines[lines.length - 2]).to.eq('Done. Happy integrating.');
 
