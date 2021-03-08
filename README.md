@@ -1,4 +1,4 @@
-# [OpenFn/devtools](https://openfn.github.io/devtools/)
+# [OpenFn/devtools](https://openfn.github.io/devtools/) [![CircleCI](https://circleci.com/gh/OpenFn/devtools.svg?style=svg)](https://circleci.com/gh/OpenFn/devtools)
 
 **_To view the documentation please visit
 [openfn.github.io/devtools](https://openfn.github.io/devtools/)._**
