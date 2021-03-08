@@ -173,23 +173,32 @@ async function addJob() {
   return inquirer.prompt(jobForm).then(({ name, another, ...rest }) => {
     jobs[name] = { ...rest };
 
-    if (another === 'yes') {
-      return addJob();
-    } else {
-      console.log('OK. Jobs written.');
-    }
+    // const triggeringJobs = Object.keys(triggers)
+    //   .map(k => [triggers[k].success, triggers[k].failure])
+    //   .flat();
+
+    // const specifiedJobKeys = Object.keys(jobs);
+    // if (!triggeringJobs.every(j => specifiedJobKeys.includes())) {
+    //   console.log(
+    //     `You have built triggers that rely on ${triggeringJobs}, but have only specified ${specifiedJobKeys}.`
+    //   );
+    //   console.log('Please add the required jobs.');
+    //   return addJob();
+    // }
+
+    if (another === 'yes') return addJob();
+
+    console.log('OK. Jobs written.');
   });
 }
 
 function addTrigger() {
   return inquirer.prompt(triggerForm).then(({ name, another, ...rest }) => {
     triggers[name] = { ...removeFalsy(rest) };
+    
+    if (another === 'yes') return addTrigger();
 
-    if (another === 'yes') {
-      return addTrigger();
-    } else {
-      console.log('OK. Triggers written.');
-    }
+    console.log('OK. Triggers written.');
   });
 }
 
@@ -198,6 +207,7 @@ async function addCredential() {
     credentials[name] = body;
 
     if (another === 'yes') return addCredential();
+    
     console.log('OK. Credentials written.');
   });
 }
@@ -252,13 +262,6 @@ inquirer
     console.log("Finally, let's add your jobs.");
     return addJob();
   })
-  // .then(() => {
-  //   const triggeredJobs = Object.keys(triggers)
-  //     .map(k => [triggers[k].success, triggers[k].failure])
-  //     .flat()
-  //     // .filter(i => i != undefined);
-  //   console.log(triggeredJobs);
-  // })
   .then(() => {
     if (type === 'monolith') {
       credentials = Object.keys(credentials).reduce((acc, key) => {
