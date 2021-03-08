@@ -252,6 +252,13 @@ inquirer
     console.log("Finally, let's add your jobs.");
     return addJob();
   })
+  // .then(() => {
+  //   const triggeredJobs = Object.keys(triggers)
+  //     .map(k => [triggers[k].success, triggers[k].failure])
+  //     .flat()
+  //     // .filter(i => i != undefined);
+  //   console.log(triggeredJobs);
+  // })
   .then(() => {
     if (type === 'monolith') {
       credentials = Object.keys(credentials).reduce((acc, key) => {
@@ -282,6 +289,6 @@ inquirer
     return [jsonProject, yamlString];
   });
 // .catch(err => {
-//   console.error(err);
 //   console.log("Well, that didn't work.");
+//   throw err;
 // });
