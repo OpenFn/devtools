@@ -15,7 +15,7 @@
   "license": "LGPL-3.0",
   "dependencies": {
     "@octokit/rest": "^18.0.12",
-    "@openfn/simple-ast": "~0.2.7",
+    "@openfn/simple-ast": "~0.2.9",
     "chai": "^4.3.3",
     "colors": "^1.4.0",
     "doclet-query": "github:openfn/jsdoc-query#master",
