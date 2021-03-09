@@ -20,7 +20,13 @@ let jobs = {};
 let triggers = {};
 let credentials = {};
 
-const suggestedAdaptors = fs.readdirSync('adaptors').map(a => `@openfn/${a}`);
+const suggestedAdaptors = (fs.existsSync('adaptors') &&
+  fs.readdirSync('adaptors').map(a => `@openfn/${a}`)) || [
+  '@openfn/language-http',
+  '@openfn/language-commcare',
+  '@openfn/language-dhis2',
+  '@openfn/language-salesforce',
+];
 
 console.log(
   'Welcome to the project spec generator.',
