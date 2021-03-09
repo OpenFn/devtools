@@ -63,6 +63,12 @@ For most standard language packages which make use of HTTP requests, you can add
 
 _wip_
 
+## Configure an OpenFn project
+
+You can use YAML project configuration files to define projects both on the [OpenFn platform](https://docs.openfn.org/documentation/deploy/platform) and in [OpenFn microservice](https://openfn.github.io/microservice/readme.html#content). Running `./scripts/generate-project.js` helps you build a project config YAML interactively.
+
+
+
 ### Pre-Requisites
 
 1. [Make](http://www.gnu.org/software/make/) is used so that our modern (es9)
