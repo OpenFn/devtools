@@ -65,9 +65,12 @@ _wip_
 
 ## Configure an OpenFn project
 
-You can use YAML project configuration files to define projects both on the [OpenFn platform](https://docs.openfn.org/documentation/deploy/platform) and in [OpenFn microservice](https://openfn.github.io/microservice/readme.html#content). Running `./scripts/generate-project.js` helps you build a project config YAML interactively.
+You can use YAML project configuration files to define projects both on the [OpenFn platform](https://docs.openfn.org/documentation/deploy/platform) and in [OpenFn microservice](https://openfn.github.io/microservice/readme.html#content). Running `./scripts/generate-project.js` helps you build a project config YAML interactively, adding your triggers, credentials and jobs to the config.
+
+If you choose `monolith mode`, all your job code will be included in the YAML. In `URI` mode, you’ll get a config file with URI-s to your defined jobs.
 
 ![](https://github.com/OpenFn/devtools/blob/main/docs/images/generate-project.gif)
+
 
 ### Pre-Requisites
 
