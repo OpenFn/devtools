@@ -34,15 +34,18 @@ const another = thing => ({
 
 const duplicateCheck = (val, obj) => !Object.keys(obj).includes(val);
 
-const name = (arr, thing, rand) => ({
+const animalGen = thing =>
+  `${gfynonce({
+    adjectives: 1,
+    separator: '-',
+  })}-${thing}`.toLowerCase();
+
+const name = (arr, thing, suggestedName) => ({
   name: 'name',
   message: `${thing} name`,
   type: 'string',
   required: true,
-  default: `${gfynonce({
-    adjectives: 1,
-    separator: '-',
-  })}-${thing}`.toLowerCase(),
+  default: suggestedName,
   // before: value => {
   //   if (value.includes(' ')) {
   //     const safeName = value.replace(/\s+/g, '-');
@@ -57,8 +60,8 @@ const name = (arr, thing, rand) => ({
   error: `${thing} names must be unique; please try something else.`,
 });
 
-const jobForm = [
-  name(jobs, 'Job'),
+const jobForm = suggestedName => [
+  name(jobs, 'Job', suggestedName),
   {
     name: 'expression',
     message: 'Path to the job expression',
@@ -104,8 +107,8 @@ const jobForm = [
   another('job'),
 ];
 
-const triggerForm = [
-  name(triggers, 'Trigger'),
+const triggerForm = suggestedName => [
+  name(triggers, 'Trigger', suggestedName),
   {
     name: 'type',
     choices: ['cron', 'message', 'success', 'failure'],
@@ -148,8 +151,8 @@ const triggerForm = [
   another('trigger'),
 ];
 
-const credentialForm = [
-  name(credentials, 'Credential'),
+const credentialForm = suggestedName => [
+  name(credentials, 'Credential', suggestedName),
   {
     name: 'body',
     message: 'Path to credential.json',
@@ -178,37 +181,64 @@ const removeFalsy = obj => {
   return newObj;
 };
 
-async function addJob() {
-  return inquirer.prompt(jobForm).then(({ name, another, ...rest }) => {
-    jobs[name] = { ...rest };
+async function addJob(suggestedName) {
+  return inquirer
+    .prompt(jobForm(suggestedName))
+    .then(({ name, another, ...rest }) => {
+      jobs[name] = { ...rest };
 
-    if (another === 'yes') {
-      return addJob();
-    } else {
+      if (another === 'yes') return addJob(animalGen('job'));
+
+      const triggeringJobs = Object.keys(triggers)
+        .map(k => [triggers[k].success, triggers[k].failure])
+        .flat()
+        .filter(k => k);
+
+      const specifiedJobKeys = Object.keys(jobs);
+
+      let missingKey;
+
+      if (
+        triggeringJobs.some(j => {
+          if (!specifiedJobKeys.includes(j)) {
+            console.log(
+              `You have built a trigger that relies on ${j}, but have only specified jobs with the following keys: ${specifiedJobKeys}.`
+            );
+            console.log(`Please add a job called ${j}.`);
+            missingKey = j;
+            return true;
+          }
+          return false;
+        })
+      ) {
+        return addJob(missingKey);
+      }
       console.log('OK. Jobs written.');
-    }
-  });
+    });
 }
 
-function addTrigger() {
-  return inquirer.prompt(triggerForm).then(({ name, another, ...rest }) => {
-    triggers[name] = { ...removeFalsy(rest) };
+function addTrigger(suggestedName) {
+  return inquirer
+    .prompt(triggerForm(suggestedName))
+    .then(({ name, another, ...rest }) => {
+      triggers[name] = { ...removeFalsy(rest) };
 
-    if (another === 'yes') {
-      return addTrigger();
-    } else {
+      if (another === 'yes') return addTrigger(animalGen('trigger'));
+
       console.log('OK. Triggers written.');
-    }
-  });
+    });
 }
 
-async function addCredential() {
-  return inquirer.prompt(credentialForm).then(({ name, another, body }) => {
-    credentials[name] = body;
+async function addCredential(suggestedName) {
+  return inquirer
+    .prompt(credentialForm(suggestedName))
+    .then(({ name, another, body }) => {
+      credentials[name] = body;
 
-    if (another === 'yes') return addCredential();
-    console.log('OK. Credentials written.');
-  });
+      if (another === 'yes') return addCredential(animalGen('credential'));
+
+      console.log('OK. Credentials written.');
+    });
 }
 
 const excludeHeavyPaths = nodePath => {
@@ -251,15 +281,15 @@ inquirer
   .then(({ outputStyle }) => {
     type = outputStyle;
     console.log("Great. Let's add your triggers.");
-    return addTrigger();
+    return addTrigger(animalGen('trigger'));
   })
   .then(() => {
     console.log("Next let's add your credentials.");
-    return addCredential();
+    return addCredential(animalGen('credential'));
   })
   .then(() => {
     console.log("Finally, let's add your jobs.");
-    return addJob();
+    return addJob(animalGen('job'));
   })
   .then(() => {
     if (type === 'monolith') {
@@ -290,7 +320,3 @@ inquirer
     console.log(`Done. Happy integrating.`);
     return [jsonProject, yamlString];
   });
-// .catch(err => {
-//   console.error(err);
-//   console.log("Well, that didn't work.");
-// });

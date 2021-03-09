@@ -24,9 +24,16 @@ describe('generate-project.js', function () {
         'trigger-1',
         ENTER,
         DOWN, // nav to message
-        ENTER, // enter message
-        '{"b": 5}',
+        DOWN, // nav to success
+        ENTER, // enter success
+        'job-87',
         ENTER, // enter criteria
+        DOWN,
+        ENTER, // enter "more triggers"
+        'trigger-2',
+        ENTER,
+        ENTER, // enter cron
+        ENTER, // enter '* * * *'
         ENTER, // enter "no more triggers"
         'credential-1',
         ENTER,
@@ -37,12 +44,21 @@ describe('generate-project.js', function () {
         ENTER,
         'test/fixtures/sampleExpression.js',
         ENTER, // enter expression path
+        DOWN, // select second adaptor
+        ENTER, // enter second adaptor
+        ENTER, // enter first trigger
+        ENTER, // enter first credential
+        ENTER, // enter no more jobs
+        'job-87',
+        ENTER,
+        'test/fixtures/sampleExpression.js',
+        ENTER, // enter expression path
         ENTER, // enter default adaptor
         ENTER, // enter first trigger
         ENTER, // enter first credential
         ENTER, // enter no more jobs
       ],
-      100
+      120
     );
 
     const lines = result.split(/\r?\n/);
@@ -90,7 +106,7 @@ describe('generate-project.js', function () {
         ENTER, // enter first credential
         ENTER, // enter no more jobs
       ],
-      100
+      120
     );
 
     const lines = result.split(/\r?\n/);

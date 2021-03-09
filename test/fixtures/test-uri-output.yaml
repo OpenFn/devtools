@@ -1,6 +1,11 @@
 jobs:
   job-1:
     expression: file://test/fixtures/sampleExpression.js
+    adaptor: '@openfn/language-commcare'
+    trigger: trigger-1
+    credential: credential-1
+  job-87:
+    expression: file://test/fixtures/sampleExpression.js
     adaptor: '@openfn/language-http'
     trigger: trigger-1
     credential: credential-1
@@ -8,5 +13,8 @@ credentials:
   credential-1: file://test/fixtures/sampleCredential.json
 triggers:
   trigger-1:
-    type: message
-    criteria: '{"b": 5}'
+    type: success
+    success: job-87
+  trigger-2:
+    type: cron
+    cron: '* * * * *'
