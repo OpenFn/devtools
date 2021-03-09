@@ -59,7 +59,7 @@ describe('generate-project.js', function () {
         ENTER, // enter first credential
         ENTER, // enter no more jobs
       ],
-      120
+      100
     );
 
     const lines = result.split(/\r?\n/);
@@ -109,7 +109,7 @@ describe('generate-project.js', function () {
         ENTER, // enter first credential
         ENTER, // enter no more jobs
       ],
-      120
+      100
     );
 
     const lines = result.split(/\r?\n/);
