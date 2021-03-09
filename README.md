@@ -24,7 +24,7 @@ To install specific adaptors, run
 `./install.sh ${ssh || https} language-${name}`
 
 To interactively generate a project configuration yaml, run
-`./devtools/scripts/generate-project.js`
+`./scripts/generate-project.js`
 
 You can run core from anywhere by using `npm install -g` for global install
 `npm install -g github:openfn/core#main`
