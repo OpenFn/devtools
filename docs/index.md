@@ -67,7 +67,7 @@ _wip_
 
 You can use YAML project configuration files to define projects both on the [OpenFn platform](https://docs.openfn.org/documentation/deploy/platform) and in [OpenFn microservice](https://openfn.github.io/microservice/readme.html#content). Running `./scripts/generate-project.js` helps you build a project config YAML interactively.
 
-
+![](https://github.com/OpenFn/devtools/blob/main/docs/images/generate-project.gif)
 
 ### Pre-Requisites
 
