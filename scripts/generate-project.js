@@ -4,6 +4,10 @@
 // =============================================================================
 var inquirer = require('inquirer');
 inquirer.registerPrompt('fuzzypath', require('inquirer-fuzzy-path'));
+inquirer.registerPrompt(
+  'autocomplete',
+  require('inquirer-autocomplete-prompt')
+);
 
 var colors = require('colors/safe');
 const gfynonce = require('gfynonce');
@@ -15,6 +19,8 @@ let type = '';
 let jobs = {};
 let triggers = {};
 let credentials = {};
+
+const suggestedAdaptors = fs.readdirSync('adaptors').map(a => `@openfn/${a}`);
 
 console.log(
   'Welcome to the project spec generator.',
@@ -44,7 +50,6 @@ const name = (arr, thing, suggestedName) => ({
   name: 'name',
   message: `${thing} name`,
   type: 'string',
-  required: true,
   default: suggestedName,
   // before: value => {
   //   if (value.includes(' ')) {
@@ -73,36 +78,29 @@ const jobForm = suggestedName => [
         return "We can't find a file there, please double-check your path.";
       return true;
     },
-    suggestOnly: true,
     filter: value => `file://${value}`,
+    suggestOnly: true,
   },
   {
     name: 'adaptor',
     message: 'Adaptor',
     default: '@openfn/language-http',
-    type: 'list',
-    choices: [
-      // TODO: Pull list from github? Or openfn.org?
-      '@openfn/language-http',
-      '@openfn/language-commcare',
-      '@openfn/language-dhis2',
-      '@openfn/language-kobotoolbox',
-    ],
-    required: true,
+    type: 'autocomplete',
+    source: (answers, input) =>
+      suggestedAdaptors.filter(a => !input || a.includes(input)),
+    suggestOnly: true,
   },
   {
     name: 'trigger',
     message: 'Trigger',
     type: 'list',
     choices: () => Object.keys(triggers),
-    required: true,
   },
   {
     name: 'credential',
     message: 'Credential',
     type: 'list',
     choices: () => Object.keys(credentials),
-    required: true,
   },
   another('job'),
 ];
@@ -113,12 +111,8 @@ const triggerForm = suggestedName => [
     name: 'type',
     choices: ['cron', 'message', 'success', 'failure'],
     message: 'Trigger type',
-    validate: value =>
-      ['cron', 'message', 'success', 'failure'].includes(value),
     type: 'list',
     default: 'cron',
-    required: true,
-    error: 'please enter "cron", "message", "success", or "failure"',
   },
   {
     name: 'cron',
@@ -165,8 +159,8 @@ const credentialForm = suggestedName => [
         return "We can't find a file there, please double-check your path.";
       return true;
     },
-    suggestOnly: true,
     filter: value => `file://${value}`,
+    suggestOnly: true,
   },
   another('credential'),
 ];
@@ -256,7 +250,6 @@ inquirer
   .prompt([
     {
       name: 'dest',
-      required: true,
       message: 'Where do you want to save the generated yaml?',
       type: 'fuzzypath',
       excludePath: nodePath => excludeHeavyPaths(nodePath),
@@ -269,7 +262,6 @@ inquirer
     outputPath = dest;
     return inquirer.prompt({
       name: 'outputStyle',
-      required: true,
       message:
         'Do you want to generate a monolith project.yaml or a URI-based project.yaml?',
       validate: value => ['uri', 'monolith'].includes(value),

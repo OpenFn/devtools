@@ -44,8 +44,8 @@ describe('generate-project.js', function () {
         ENTER,
         'test/fixtures/sampleExpression.js',
         ENTER, // enter expression path
-        DOWN, // select second adaptor
-        ENTER, // enter second adaptor
+        '@openfn/language-commcare',
+        ENTER, // enter adaptor
         ENTER, // enter first trigger
         ENTER, // enter first credential
         ENTER, // enter no more jobs
@@ -53,7 +53,8 @@ describe('generate-project.js', function () {
         ENTER,
         'test/fixtures/sampleExpression.js',
         ENTER, // enter expression path
-        ENTER, // enter default adaptor
+        '@openfn/language-http',
+        ENTER, // enter http adaptor
         ENTER, // enter first trigger
         ENTER, // enter first credential
         ENTER, // enter no more jobs
@@ -65,6 +66,7 @@ describe('generate-project.js', function () {
     expect(lines[lines.length - 2]).to.eq('Done. Happy integrating.');
 
     const file = fs.readFileSync(testOutputPath);
+
     fs.unlinkSync(testOutputPath);
     expect(file.equals(expectedURI)).to.be.true;
   });
@@ -101,7 +103,8 @@ describe('generate-project.js', function () {
         ENTER,
         'test/fixtures/sampleExpression.js',
         ENTER, // enter expression path
-        ENTER, // enter default adaptor
+        '@openfn/language-http',
+        ENTER, // enter adaptor
         ENTER, // enter first trigger
         ENTER, // enter first credential
         ENTER, // enter no more jobs
