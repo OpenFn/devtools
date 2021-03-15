@@ -76,7 +76,7 @@ read more about the config file
 If you choose `monolith` mode, all your job code will be included in the YAML.
 In `URI` mode, you’ll get a config file with URI-s to your defined jobs.
 
-![Generate Project](/img/generate-project.gif)
+![Generate Project](images/generate-project.gif)
 
 ### Pre-Requisites
 
