@@ -1,0 +1,13 @@
+#!/usr/bin/env node
+
+const yargs = require('yargs/yargs');
+const { hideBin } = require('yargs/helpers');
+
+yargs(hideBin(process.argv))
+  .command(require('../lib/commands/release'))
+  .command(require('../lib/commands/package-release'))
+  .command(require('../lib/commands/check-package-json'))
+  .demandCommand(1, 'must provide a command')
+  .help('h')
+  .alias('h', 'help')
+  .epilog('OpenFn 2021').argv;
