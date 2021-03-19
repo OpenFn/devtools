@@ -1,4 +1,4 @@
-# [OpenFn/devtools](https://openfn.github.io/devtools/) [![CircleCI](https://circleci.com/gh/OpenFn/devtools.svg?style=svg)](https://circleci.com/gh/OpenFn/devtools)
+# OpenFn/devtools [![CircleCI](https://circleci.com/gh/OpenFn/devtools.svg?style=svg)](https://circleci.com/gh/OpenFn/devtools)
 
 A set of tools for writing &amp; testing expressions, managing OpenFn projects,
 and developing new adaptors.
