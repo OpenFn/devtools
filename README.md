@@ -33,16 +33,22 @@ You can run core from anywhere by using `npm install -g` for global install
 
 ## Usage
 
-Read the docs at [docs.openfn.org](https://docs.openfn.org)
+Read the docs at [docs.openfn.org](https://docs.openfn.org).
 
-Execute takes:
+`execute` takes:
 
-1. `-l [language-package].Adaptor`: The adaptor being used
+1. `-l [language-xyz].Adaptor`: The adaptor being used
 2. `-e [expression.js]:` The expression being tested
-3. `-s [state.json]`: The message `data: {...}` and credential
-   `configuration: {...}`
+3. `-s [state.json]`: The message `data: {...}` and
+   credential`configuration: {...}`
 4. `-o [output.json]`: The file to which the output will be written
 
+Run a job like this:
+
 ```sh
-./core/bin/core execute execute -l ./adaptors/language-[XXX].Adaptor -s ./tmp/state.json -o ./tmp/output.json -e ./tmp/expression.js
+./core/bin/core execute \
+  -l ./adaptors/language-http.Adaptor \
+  -s ./tmp/state.json \
+  -o ./tmp/output.json \
+  -e ./tmp/expression.js
 ```
