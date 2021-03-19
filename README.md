@@ -1,16 +1,18 @@
 # [OpenFn/devtools](https://openfn.github.io/devtools/) [![CircleCI](https://circleci.com/gh/OpenFn/devtools.svg?style=svg)](https://circleci.com/gh/OpenFn/devtools)
 
-**_To view the documentation please visit
-[openfn.github.io/devtools](https://openfn.github.io/devtools/)._**
-
 A set of tools for writing &amp; testing expressions, managing OpenFn projects,
 and developing new adaptors.
+
+## [Documentation](https://docs.openfn.org/documentation/build/devtools)
+
+_🔥 The documentation for this project can be found at
+[docs.openfn.org](https://docs.openfn.org/documentation/build/devtools). 🔥_
 
 ## Up and running
 
 1. Make sure you've got [git](https://git-scm.com/downloads) (maybe GitBash for
    Windows?)
-2. And [Node.js](https://nodejs.org/en/download/) (version 6.11 or greater)
+2. And [Node.js](https://nodejs.org/en/download/) (version 12 or greater)
 3. Run `git clone git@github.com:OpenFn/devtools.git` for SSH or
    `git clone https://github.com/OpenFn/devtools.git`
 4. Run `cd devtools`
@@ -29,4 +31,18 @@ To interactively generate a project configuration yaml, run
 You can run core from anywhere by using `npm install -g` for global install
 `npm install -g github:openfn/core#main`
 
-**Now go read the [docs](https://openfn.github.io/devtools/)**
+## Usage
+
+Read the docs at [docs.openfn.org](https://docs.openfn.org)
+
+Execute takes:
+
+1. `-l [language-package].Adaptor`: The adaptor being used
+2. `-e [expression.js]:` The expression being tested
+3. `-s [state.json]`: The message `data: {...}` and credential
+   `configuration: {...}`
+4. `-o [output.json]`: The file to which the output will be written
+
+```sh
+./core/bin/core execute execute -l ./adaptors/language-[XXX].Adaptor -s ./tmp/state.json -o ./tmp/output.json -e ./tmp/expression.js
+```
