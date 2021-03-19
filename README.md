@@ -3,10 +3,10 @@
 A set of tools for writing &amp; testing expressions, managing OpenFn projects,
 and developing new adaptors.
 
-## [Documentation](https://docs.openfn.org/documentation/build/devtools)
+## [Documentation](https://docs.openfn.org/documentation/devtools/home)
 
 _🔥 The documentation for this project can be found at
-[docs.openfn.org](https://docs.openfn.org/documentation/build/devtools). 🔥_
+[docs.openfn.org](https://docs.openfn.org/documentation/devtools/home). 🔥_
 
 ## Up and running
 
@@ -33,7 +33,7 @@ You can run core from anywhere by using `npm install -g` for global install
 
 ## Usage
 
-Read the docs at [docs.openfn.org](https://docs.openfn.org).
+Read the docs at [docs.openfn.org](https://docs.openfn.org/documentation/devtools/home).
 
 `execute` takes:
 
