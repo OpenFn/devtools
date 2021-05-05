@@ -33,7 +33,8 @@ You can run core from anywhere by using `npm install -g` for global install
 
 ## Usage
 
-Read the docs at [docs.openfn.org](https://docs.openfn.org/documentation/devtools/home).
+Read the docs at
+[docs.openfn.org](https://docs.openfn.org/documentation/devtools/home).
 
 `execute` takes:
 
@@ -47,7 +48,7 @@ Run a job like this:
 
 ```sh
 ./core/bin/core execute \
-  -l ./adaptors/language-http.Adaptor \
+  -l ./adaptors/language-http/ \
   -s ./tmp/state.json \
   -o ./tmp/output.json \
   -e ./tmp/expression.js
