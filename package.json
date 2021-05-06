@@ -1,6 +1,6 @@
 {
   "name": "@openfn/devtools",
-  "version": "2.0.5",
+  "version": "2.1.0",
   "author": "Open Function Group",
   "homepage": "https://docs.openfn.org",
   "repository": {
@@ -15,7 +15,7 @@
   "license": "LGPL-3.0",
   "dependencies": {
     "@octokit/rest": "^18.0.12",
-    "@openfn/simple-ast": "~0.2.9",
+    "@openfn/simple-ast": "~0.3.0",
     "chai": "^4.3.3",
     "colors": "^1.4.0",
     "doclet-query": "github:openfn/jsdoc-query#master",
