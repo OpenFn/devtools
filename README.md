@@ -52,3 +52,26 @@ Run a job like this:
   -o ./tmp/output.json \
   -e ./tmp/expression.js
 ```
+
+## Deploying Adaptors
+
+**CLI**
+
+Using the CLI via `./bin/cli`:
+
+- release
+- package-release
+- check-package-json
+
+**via Docker**
+
+```sh
+docker build -t dev
+docker run --rm -it \
+  --name devtools \
+  -e GH_TOKEN=$GH_TOKEN \
+  -v $PWD:/opt \
+  -v $(realpath ../adaptor):/tmp/adaptor \
+  devtools \
+  cli release /tmp/adaptor
+```

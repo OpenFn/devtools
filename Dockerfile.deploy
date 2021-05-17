@@ -1,0 +1,23 @@
+FROM node:12.22.1-alpine3.12
+
+ARG NPM_VERSION 7.11.0
+ENV NPM_VERSION $NPM_VERSION
+
+RUN npm install -g npm@$NPM_VERSION
+RUN apk add --no-cache --virtual .build-deps-full \
+      make gcc linux-headers libgcc musl-dev libc-dev g++ python3 
+RUN apk add --no-cache git openssh-client
+
+WORKDIR /opt
+ADD ./bin .
+ADD ./package.json .
+ADD ./package-lock.json .
+
+
+RUN npm install
+
+RUN apk del .build-deps-full
+
+ENV PATH /opt/bin:$PATH
+
+ENTRYPOINT sh
