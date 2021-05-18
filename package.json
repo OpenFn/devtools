@@ -23,7 +23,7 @@
     "colors": "^1.4.0",
     "common-tags": "^1.8.0",
     "doclet-query": "github:openfn/jsdoc-query#master",
-    "execa": "^0.7.0",
+    "execa": "^5.0.0",
     "fs": "0.0.1-security",
     "gfynonce": "^1.0.1",
     "inquirer": "^8.0.0",
