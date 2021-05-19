@@ -54,8 +54,8 @@ function exec(cmd, opts = {}) {
 // Creates a temporary directory.
 function mktemp() {
   return exec('mktemp -d')
-    .then((stdout) => stdout.trim())
-    .then((tmpDir) => {
+    .then(stdout => stdout.trim())
+    .then(tmpDir => {
       console.log(`Created temp directory: ${tmpDir}`);
       return tmpDir;
     });
@@ -67,19 +67,19 @@ function pack(modulePath) {
   modulePath = modulePath.trim();
   return (
     exec(`npm pack`, { cwd: modulePath })
-      .then((packName) => {
+      .then(packName => {
         packName = packName.trim();
         console.log(`Created tarball of module using npm-pack`);
         return packName;
       })
       // Return the path of where `npm pack` created the tarball
-      .then((packName) => `${modulePath}/${packName}`)
+      .then(packName => `${modulePath}/${packName}`)
   );
 }
 
 // Given a path to a package tarball, untar it to a destination directory.
 function unpack({ packPath, destDir }) {
-  return exec(`tar -xpf ${packPath} -C ${destDir}`).then((stdout) =>
+  return exec(`tar -xpf ${packPath} -C ${destDir}`).then(stdout =>
     console.log(`Unpacked module to: ${destDir}`)
   );
 }
@@ -91,7 +91,7 @@ function installDeps(path) {
   return exec(`npm install -B`, {
     env: Object.assign({ NODE_ENV: 'production' }, process.env),
     cwd: path,
-  }).then((stdout) => {
+  }).then(stdout => {
     process.stdout.write('✓\n');
     console.log(stdout.trim());
   });
@@ -100,8 +100,8 @@ function installDeps(path) {
 function buildAST(packPath, destDir) {
   process.stdout.write('Building OpenFn AST... \n');
   return exec(
-    `node ./node_modules/@openfn/simple-ast/lib/generate.js --adaptor ${packPath}/lib/Adaptor.js --output ${destDir}/ast.json`
-  ).then((stdout) => {
+    `node ./node_modules/@openfn/simple-ast/lib/generate.js --adaptor ${packPath}/src/Adaptor.js --output ${destDir}/ast.json`
+  ).then(stdout => {
     console.log(stdout.trim());
     process.stdout.write('✓\n');
   });
@@ -135,9 +135,9 @@ function tar({ target, name, dest }) {
 }
 
 mktemp()
-  .then((tmpDir) => {
+  .then(tmpDir => {
     return pack(languagePackDir)
-      .then((packPath) => {
+      .then(packPath => {
         return unpack({ packPath, destDir: tmpDir }).then(() =>
           cleanup([packPath])
         );
@@ -162,7 +162,7 @@ mktemp()
       });
   })
   .then(() => console.log('Successfully bundled module.'))
-  .catch((err) => {
+  .catch(err => {
     process.stdout.write('✗\n');
     console.error(err.message);
     if (debug) console.error(err.stack);
