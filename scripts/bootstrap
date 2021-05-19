@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 
-while read repo
-do
+while read repo; do
   if [[ ! -d "$repo" ]]; then
     echo "Cloning $repo..."
     git clone --depth=1 "git@github.com:OpenFn/$repo.git" ./adaptors/$repo
@@ -12,11 +11,7 @@ do
     fi
   fi
 
-  if [[ ! -f "./adaptors/$repo/.git/hooks/post-commit" ]]; then
-    echo "Adding post-commit hook to $repo..."
-    cp scripts/post-commit "./adaptors/$repo/.git/hooks/post-commit"
-  fi
-done < repos
+done <repos
 
 # Ensure we have a doclets directory
 mkdir -p doclets
