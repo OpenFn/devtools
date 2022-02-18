@@ -48,7 +48,7 @@ Run a job like this:
 
 ```sh
 ./core/bin/core execute \
-  -l ./adaptors/language-http/ \
+  -l ./adaptors/language-XXXXXXX/ \
   -s ./tmp/state.json \
   -o ./tmp/output.json \
   -e ./tmp/expression.js
