@@ -1,6 +1,6 @@
 {
   "configuration": {
-    "hostUrl": "https://play.dhis2.org/2.34.1",
+    "hostUrl": "https://play.dhis2.org/2.37.3",
     "password": "district",
     "username": "admin"
   },
@@ -15,8 +15,8 @@
       "etc."
     ],
     "case": {
-      "firstName": "Sample",
-      "lastName": "Testonly",
+      "firstName": "Sampley",
+      "lastName": "Testerson",
       "status": "for_referral",
       "organization": "district_health_services",
       "services_requested": ["child_protection_program", "awareness_campaign"]

@@ -1,15 +1,9 @@
-createTEI({
+create('trackedEntityInstances', {
   trackedEntityType: 'nEenWmSyUEp', // a person
   orgUnit: 'g8upMTyEZGZ', // Njandama MCHP
   attributes: [
-    {
-      attribute: 'w75KJ2mc4zz', // attribute id for first name
-      value: dataValue('case.firstName')(state), // data from submission
-    },
-    {
-      attribute: 'zDhUuAYrxNC', // attribute id for last name
-      value: dataValue('case.lastName')(state), // data from another submission field
-    },
+    attr('w75KJ2mc4zz', dataValue('case.firstName')), // first name
+    attr('zDhUuAYrxNC', dataValue('case.lastName')), // last name
   ],
   enrollments: [
     {
