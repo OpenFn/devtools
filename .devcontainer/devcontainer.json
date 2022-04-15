@@ -5,7 +5,7 @@
   "build": {
     "dockerfile": "Dockerfile",
     // Update 'VARIANT' to pick a Node version: 12, 14, 16
-    "args": { "VARIANT": "12" }
+    "args": { "VARIANT": "14" }
   },
 
   "containerEnv": {
