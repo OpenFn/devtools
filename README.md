@@ -19,8 +19,8 @@ _🔥 The documentation for this project can be found at
 5. Run `./install.sh ssh` or `./install.sh https` to install core,
    language-common, and language-http
 
-_Note: If you get a "permission denied" message when running `./install.sh`, try
-`run chmod +x ./install.sh ` then retry the install command._
+_Note: If you get a "permission denied" message when running `./install.sh`, run
+`chmod +x ./install.sh` then retry the install command._
 
 To install specific adaptors, run
 `./install.sh ${ssh || https} language-${name}`
