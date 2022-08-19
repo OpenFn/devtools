@@ -1,6 +1,6 @@
 {
   "configuration": {
-    "hostUrl": "https://play.dhis2.org/2.37.3",
+    "hostUrl": "https://play.dhis2.org/2.37.7.1",
     "password": "district",
     "username": "admin"
   },
