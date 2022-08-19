@@ -3,16 +3,17 @@
 # Bash script to install OpenFn/devtools
 # ==============================================================================
 
-# if [ "$1" != https ] || [ "$1" != ssh ]; then
-#   echo 'For initial setup, run:'
-#   echo '  ./install.sh ssh'
-#   echo '  ./install.sh https'
-#   echo 'To install a specific adaptor, run:'
-#   echo '  ./install.sh ssh language-dhis2'
-#   echo '  ./install.sh https language-salesforce'
-#   echo '  ./install.sh https language-________________'
-#   exit 1
-# fi
+if [[ "$1" != "https" ]] && [[ "$1" != "ssh" ]]; then
+  echo 'For initial setup, add ssh or https as your first argument:'
+  echo '  ./install.sh ssh'
+  echo '  ./install.sh https'
+  echo ''
+  echo 'To install a specific adaptor, add a second argument:'
+  echo '  ./install.sh ssh language-dhis2'
+  echo '  ./install.sh ssh language-salesforce'
+  echo '  ./install.sh ssh language-__________'
+  exit 1
+fi
 
 if [[ $1 = https ]]; then
   clone="git clone https://github.com/OpenFn"
