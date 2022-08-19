@@ -28,7 +28,7 @@ else
     && echo language-common adaptor installed ✓
   
   $clone/language-http.git ./adaptors/language-http || (cd ./core ; git pull) \
-    && npm install --prefix ./adaptors/language-common \
+    && npm install --prefix ./adaptors/language-http \
     && echo language-http adaptor installed ✓  
   
   mkdir -p tmp
