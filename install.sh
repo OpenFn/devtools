@@ -4,7 +4,7 @@
 # ==============================================================================
 
 if [[ "$1" != "https" ]] && [[ "$1" != "ssh" ]]; then
-  echo 'For initial setup, add ssh or https as your first argument:'
+  echo 'For initial setup, specify ssh or https as your first argument:'
   echo '  ./install.sh ssh'
   echo '  ./install.sh https'
   echo ''
