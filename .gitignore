@@ -5,6 +5,6 @@ core/
 adaptors/
 projects/
 clients/
-# tmp/
+tmp/
 site/
 shunit*
