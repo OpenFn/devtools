@@ -33,7 +33,7 @@
     "inquirer-fuzzy-path": "^2.3.0",
     "inquirer-path": "^1.0.0-beta5",
     "js-yaml": "^4.0.0",
-    "jsdoc-api": "1.1.0",
+    "jsdoc-api": "1.2.4",
     "listr": "^0.14.3",
     "minimist": "^1.2.6",
     "np": "^7.4.0",
