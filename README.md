@@ -1,4 +1,6 @@
-# OpenFn/devtools [![CircleCI](https://circleci.com/gh/OpenFn/devtools.svg?style=svg)](https://circleci.com/gh/OpenFn/devtools)
+# _⚠️ Replaced by [OpenFn/kit/packages/cli](https://github.com/OpenFn/kit/tree/main/packages/cli)! ⚠️_
+
+# OpenFn/devtools (archived)
 
 A set of tools for writing &amp; testing expressions, managing OpenFn projects,
 and developing new adaptors.
